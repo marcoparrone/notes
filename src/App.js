@@ -151,7 +151,7 @@ class NotesList extends React.Component {
     this.tmptype = 'note';
     this.tmptitle = '';
     this.tmpcontent = '';
-    this.showedit = 'no';
+    this.showedit = 'yes';
     this.showmove = 'no';
     this.showadd = 'yes';
     this.textarearows = '20';
