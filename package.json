@@ -1,0 +1,64 @@
+{
+			"name": "notes",
+			"version": "0.1.0",
+			"homepage": "https://notes.marcoparrone.com",
+			"private": true,
+			"bugs": {
+						"url": "https://github.com/marcoparrone/notes/issues",
+						"email": "marco.parrone@gmail.com"
+			},
+			"license": "MIT",
+			"dependencies": {
+						"@material/card": "^8.0.0",
+						"@material/dialog": "^8.0.0",
+						"@material/react-material-icon": "^0.15.0",
+						"@material/react-top-app-bar": "^0.15.0",
+						"@material/snackbar": "^8.0.0",
+						"@material/theme": "^8.0.0",
+						"@material/top-app-bar": "^8.0.0",
+						"@types/classnames": "^2.2.11",
+						"@types/node": "^14.14.16",
+						"@types/react": "^17.0.0",
+						"@types/react-dom": "^17.0.0",
+						"file-saver": "^2.0.5",
+						"react": "^17.0.1",
+						"react-dom": "^17.0.1",
+						"react-scripts": "4.0.1",
+						"typescript": "^4.1.3"
+			},
+			"scripts": {
+						"predeploy": "npm run build",
+						"deploy": "mydeploy.sh notes",
+						"start": "react-scripts start",
+						"build": "react-scripts build",
+						"test": "react-scripts test",
+						"eject": "react-scripts eject",
+						"postinstall": "patch-package"
+			},
+			"eslintConfig": {
+						"extends": "react-app"
+			},
+			"browserslist": {
+						"production": [
+									">0.2%",
+									"not dead",
+									"not op_mini all"
+						],
+						"development": [
+									"last 1 chrome version",
+									"last 1 firefox version",
+									"last 1 safari version"
+						]
+			},
+			"devDependencies": {
+						"@types/file-saver": "^2.0.1",
+						"clean-webpack-plugin": "^3.0.0",
+						"html-webpack-plugin": "^4.5.0",
+						"mocha": "^8.2.1",
+						"should": "^13.2.3",
+						"webpack-cli": "^4.3.0",
+						"webpack-dev-server": "^3.11.0",
+						"webpack-merge": "^5.7.3",
+						"workbox-webpack-plugin": "^6.0.2"
+			}
+}

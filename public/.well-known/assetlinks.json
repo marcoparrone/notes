@@ -1,0 +1,5 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target" : { "namespace": "android_app", "package_name": "com.marcoparrone.twa.notes",
+                   "sha256_cert_fingerprints": ["DB:AE:E3:6C:58:02:A2:90:42:A8:0F:6B:32:14:5A:CF:E9:BA:95:50:DF:C1:A7:7F:68:6E:CF:AA:DC:0F:EE:EA"] }
+    }]

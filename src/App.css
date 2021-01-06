@@ -1,0 +1,53 @@
+:root {
+    --color-scheme-background:white;
+    --color-scheme-text-color:black;
+
+    --mdc-theme-primary:black;
+    --mdc-theme-secondary:#777;
+    --mdc-theme-on-primary:white;
+    --mdc-theme-on-secondary:yellow;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+	/* Keep the default values. */
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+	/* Keep the default values. */
+    }
+}
+
+body {
+    background: var(--color-scheme-background);
+    color: var(--color-scheme-text-color);
+}
+
+section.bookmarksSection {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.card-header {
+    margin: 1.25rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.card-icon {
+    padding-right: 8px;
+}
+
+.card-body {
+    padding: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+.center-text {
+    vertical-align: center;
+}
