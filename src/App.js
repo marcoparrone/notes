@@ -875,7 +875,7 @@ class NotesList extends React.Component {
               <div className="mdc-dialog__surface">
                 <h2 className="mdc-dialog__title" id="opennote-dialog-title">{this.state.tmptitle}</h2>
                 <div className="mdc-dialog__content" id="opennote-dialog-content">
-                {this.state.tmpcontent}
+                <pre>{this.state.tmpcontent}</pre>
                 </div>
                 <footer className="mdc-dialog__actions">
                   <input type="submit" value="Close" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
