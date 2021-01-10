@@ -729,8 +729,22 @@ class NotesList extends React.Component {
 
   importNotesReaderOnload(e) {
     let newnotes = JSON.parse(e.target.result);
-    if (newnotes.length > 0) {
-      // Delete old schedules.
+    let missingFields = false;
+
+    for (let i = 0; i < newnotes.length; i++) {
+      if (newnotes[i].type === undefined
+        || newnotes[i].title === undefined
+        || newnotes[i].content === undefined
+        || newnotes[i].visible === undefined)
+        {
+          missingFields = true;
+          alert ('error: file format is wrong.');
+          break;
+        }
+    }
+
+    if (missingFields === false && newnotes.length > 0) {
+      // Delete old notes.
       for (let i = 0; i < this.notes.length; i++) {
         this.deleteNote(i);
       }
