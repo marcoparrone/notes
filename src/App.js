@@ -1072,7 +1072,7 @@ class NotesList extends React.Component {
                   The notes are saved in the browser’s localStorage for the notes.marcoparrone.com domain.
                   localStorage works fine with Chrome, Edge and Firefox browsers. Other browsers may delete localStorage after some time.
                   Android by default uses Chrome, Windows by default uses Edge. Notes currently is not supported on Apple products.
-                    With the purpose to help preventing the loss of the notes, it is suggested to make a backup using the "export" functionality, every time you make some modifications which you don't want to lose.</p>
+                    With the purpose to help to prevent the loss of the notes, it is suggested to make a backup using the "export" functionality, every time you make some modifications that you don't want to lose.</p>
                 </div>
                 <footer className="mdc-dialog__actions">
                   <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
