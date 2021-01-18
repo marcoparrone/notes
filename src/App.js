@@ -680,7 +680,7 @@ class NotesList extends React.Component {
   }
 
   handleSubmit(cursor) {
-    let newCursor = cursor.split(".");
+    let newCursor = cursor.toString().split(".");
     let note = null;
     if (newCursor.length > 0) {
       note = this.notes[newCursor[0]];
@@ -987,7 +987,7 @@ class NotesList extends React.Component {
       newCursor = this.notes.length.toString();
       tmpnotes = this.notes;
     } else {
-      oldCursor = cursor.split(".");
+      oldCursor = cursor.toString().split(".");
       if (oldCursor.length > 0) {
         tmpnotes = this.notes;
         note = tmpnotes[oldCursor[0]];
@@ -1017,7 +1017,7 @@ class NotesList extends React.Component {
   }
 
   openNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     if (oldCursor.length > 0) {
       note = this.notes[oldCursor[0]];
@@ -1098,7 +1098,7 @@ class NotesList extends React.Component {
   }
 
   editNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     if (oldCursor.length > 0) {
       note = this.notes[oldCursor[0]];
@@ -1206,7 +1206,7 @@ class NotesList extends React.Component {
   }
 
   movebackwardNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     let othernote = null;
     let i = 0;
@@ -1244,7 +1244,7 @@ class NotesList extends React.Component {
   }
 
   moveforwardNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     let othernote = null;
     let i = 0;
@@ -1282,7 +1282,7 @@ class NotesList extends React.Component {
   }
 
   moveupwardNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     let othernote = null;
     let i = 0;
@@ -1333,7 +1333,7 @@ class NotesList extends React.Component {
   }
 
   movedownwardNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     let othernote = null;
     let nextfolder = null;
@@ -1388,7 +1388,7 @@ class NotesList extends React.Component {
   }
 
   deleteNote(cursor) {
-    let oldCursor = cursor.split(".");
+    let oldCursor = cursor.toString().split(".");
     let note = null;
     if (oldCursor.length > 0) {
       note = this.notes[oldCursor[0]];
@@ -1903,12 +1903,12 @@ class NotesList extends React.Component {
                 <h2 className="mdc-dialog__title" id="help-dialog-title">{this.state.text_help_title}</h2>
                 <div className="mdc-dialog__content" id="help-dialog-content">
                   {HtmlParse(this.state.text_help_content)}
-                  <footer className="mdc-dialog__actions">
-                    <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                      <span className="mdc-button__label">{this.state.text_close_button}</span>
-                    </button>
-                  </footer>
                 </div>
+                <footer className="mdc-dialog__actions">
+                  <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
+                    <span className="mdc-button__label">{this.state.text_close_button}</span>
+                  </button>
+                </footer>
               </div>
               <div className="mdc-dialog__scrim"></div>
             </div>
