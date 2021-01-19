@@ -529,6 +529,8 @@ class NotesList extends React.Component {
           text_about_content2: this.text_about_content2,
           text_about_content3: this.text_about_content3
         });
+
+        localStorage.setItem('language', this.language);
       })
       .catch(error => {
         console.error('Cannot fetch i18n/' + banana.locale + '.json: ', error);
