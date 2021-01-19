@@ -85,7 +85,7 @@ press the "move forward" button to exchange the position with the next element,
 press the "move upward" button to move the element out of the folder where it currently is,
 or press the "move downward" button to move the element inside the next subfolder.
 </p>
-<p>In the settings menu, accessible after clicking on the "settings" icon, you can hide or show the editing, movement and addition buttons.</p>
+<p>In the settings menu, accessible after clicking on the "settings" icon, you can hide or show the editing, movement and addition buttons. You can also configure the text area rows and columns for the "edit" dialog box. It is also possible to change the language of the user interface.</p>
 <p>To import or export the notes, press on the import/export icon. The notes will be imported or exported in a JSON file specific to this app. When importing the notes from a file, the current notes will be deleted and overwritten.</p>
 <p>Notes is a Progressive Web Application, which means that it runs inside a browser.
 When you install it, while the browser components are not shown, it still runs inside a browser.
