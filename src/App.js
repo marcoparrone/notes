@@ -21,13 +21,13 @@ import { MDCDialog } from '@material/dialog';
 
 import "@material/card/dist/mdc.card.css";
 
-import saveAs from 'file-saver';
+import I18n from '@marcoparrone/i18n';
 
-import HtmlParse from 'html-react-parser';
+import saveAs from 'file-saver';
 
 import get_timestamp from './timestamp';
 
-const supported_languages = ['en', 'af', 'sq', 'am', 'ar', 'hy', 'az', 'eu', 'be', 'bn', 'bs', 'bg', 'ca', 'ceb', 'ny', 'zh-CN', 'zh-TW', 'co', 'hr', 'cs', 'da', 'nl', 'eo', 'et', 'tl', 'fi', 'fr', 'fy', 'gl', 'ka', 'de', 'el', 'gu', 'ht', 'ha', 'haw', 'iw', 'hi', 'hmn', 'hu', 'is', 'ig', 'id', 'ga', 'it', 'ja', 'jw', 'kn', 'kk', 'km', 'rw', 'ko', 'ku', 'ky', 'lo', 'la', 'lv', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'my', 'ne', 'no', 'or', 'ps', 'fa', 'pl', 'pt', 'pa', 'ro', 'ru', 'sm', 'gd', 'sr', 'st', 'sn', 'sd', 'si', 'sk', 'sl', 'so', 'es', 'su', 'sw', 'sv', 'tg', 'ta', 'tt', 'te', 'th', 'tr', 'tk', 'uk', 'ur', 'ug', 'uz', 'vi', 'cy', 'xh', 'yi', 'yo', 'zu', 'he', 'zh'];
+const defaultText = require ('./en.json');
 
 class Note extends React.Component {
   render() {
@@ -168,61 +168,7 @@ class NotesList extends React.Component {
     this.textarearows = '20';
     this.textareacols = '30';
 
-    this.language = 'en';
-
-    this.text = {
-      "text_appname": "Notes",
-      "text_add_label": "add a note",
-      "text_settings_label": "settings",
-      "text_importexport_label": "import and export notes",
-      "text_help_label": "help",
-      "text_about_label": "about",
-      "text_close_label": "close",
-      "text_snack_mustbenum": "Value must be a number!",
-      "text_snack_toobig": "Selected value is too big!",
-      "text_snack_toosmall": "Selected value is too small!",
-      "text_edit_title": "Edit note",
-      "text_edit_type": "Type:",
-      "text_edit_note": "note",
-      "text_edit_folder": "folder",
-      "text_edit_note_title": "Title:",
-      "text_edit_content": "Content:",
-      "text_delete": "Delete",
-      "text_back": "Back",
-      "text_save": "Save",
-      "text_settings_title": "Settings",
-      "text_settings_content1": "Here you can configure the application.",
-      "text_yes": "yes",
-      "text_no": "no",
-      "text_settings_showedit": "Show edit buttons:",
-      "text_settings_showmove": "Show movement buttons:",
-      "text_settings_showadd": "Show \"add\" buttons in folders:",
-      "text_settings_rows": "Text area rows:",
-      "text_settings_columns": "Text area columns:",
-      "text_language": "Choose language:",
-      "text_close_button": "Close",
-      "text_importexport_title": "Import/export",
-      "text_importexport_content": "Here you can import and export your notes.",
-      "text_import": "Import:",
-      "text_export": "Export",
-      "text_error_loadfile": "error: cannot load file.",
-      "text_error_fileformat": "error: file format is wrong.",
-      "text_example_title": "Example Title ",
-      "text_example_content": "Example Content ",
-      "text_open": "Open",
-      "text_add": "Add",
-      "text_edit": "Edit",
-      "text_move_backward": "Move Backward",
-      "text_move_forward": "Move Forward",
-      "text_move_upward": "Move Upward",
-      "text_move_downward": "Move Downward",
-      "text_help_title": "Help",
-      "text_about_title": "About",
-      "text_help_content": "<p>Notes is an app to save and organize notes.</p><p>To create a new note, or a new folder, press the \"plus\" icon: choose between note and folder, insert the title and eventually the content, then press save to save the changes, or press delete to delete the note, or back to skip the changes but keep the note.</p><p>Press the \"open\" button near a note to open the related content.</p><p>Press the \"add\" button inside a folder to add a new element to it.</p><p>For both notes and folders, press the \"edit\" button to modify them, press the \"move backward\" button to exchange the position with the previous element, press the \"move forward\" button to exchange the position with the next element, press the \"move upward\" button to move the element out of the folder where it currently is, or press the \"move downward\" button to move the element inside the next subfolder.</p><p>In the settings menu, accessible after clicking on the \"settings\" icon, you can hide or show the editing, movement and addition buttons. You can also configure the text area rows and columns for the \"edit\" dialog box. It is also possible to change the language of the user interface.</p><p>To import or export the notes, press on the import/export icon. The notes will be imported or exported in a JSON file specific to this app. When importing the notes from a file, the current notes will be deleted and overwritten.</p><p>Notes is a Progressive Web Application, which means that it runs inside a browser. When you install it, while the browser components are not shown, it still runs inside a browser. The notes are saved in the browser’s localStorage for the notes.marcoparrone.com domain. localStorage works fine with Chrome, Edge and Firefox browsers. Other browsers may delete localStorage after some time. Android by default uses Chrome, Windows by default uses Edge. Notes currently is not supported on Apple products.  With the purpose to help to prevent the loss of the notes, it is suggested to make a backup using the \"export\" functionality, every time you make some modifications that you don't want to lose.</p></div>",
-      "text_about_content1": "<p>Copyright © 2017,2019,2020,2021 Marco Parrone.<br />All Rights Reserved.</p><p>THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>",
-      "text_about_content2": "<p>THIS SERVICE MAY CONTAIN TRANSLATIONS POWERED BY GOOGLE. GOOGLE DISCLAIMS ALL WARRANTIES RELATED TO THE TRANSLATIONS, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OF ACCURACY, RELIABILITY, AND ANY IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</p>",
-      "text_about_content3": "<p>This web app has been translated for your convenience using translation software powered by Google Translate. Reasonable efforts have been made to provide an accurate translation, however, no automated translation is perfect nor is it intended to replace human translators. Translations are provided as a service to users of the marcoparrone.com website, and are provided \"as is.\" No warranty of any kind, either expressed or implied, is made as to the accuracy, reliability, or correctness of any translations made from English into any other language. Some content (such as images, videos, Flash, etc.) may not be accurately translated due to the limitations of the translation software.</p><p>The official text is the English version of the website. Any discrepancies or differences created in the translation are not binding and have no legal effect for compliance or enforcement purposes. If any questions arise related to the accuracy of the information contained in the translated website, refer to the English version of the website which is the official version.</p>"
-  };
+    this.i18n = {};
 
     this.state = {
       notes: this.notes,
@@ -235,58 +181,68 @@ class NotesList extends React.Component {
       showadd: this.showadd,
       textarearows: this.textarearows,
       textareacols: this.textareacols,
-      language: this.language,
-      text_appname: this.text['text_appname'],
-      text_add_label: this.text['text_add_label'],
-      text_settings_label: this.text['text_settings_label'],
-      text_importexport_label: this.text['text_importexport_label'],
-      text_help_label: this.text['text_help_label'],
-      text_about_label: this.text['text_about_label'],
-      text_close_label: this.text['text_close_label'],
-      text_snack_mustbenum: this.text['text_snack_mustbenum'],
-      text_snack_toobig: this.text['text_snack_toobig'],
-      text_snack_toosmall: this.text['text_snack_toosmall'],
-      text_edit_title: this.text['text_edit_title'],
-      text_edit_type: this.text['text_edit_type'],
-      text_edit_note: this.text['text_edit_note'],
-      text_edit_folder: this.text['text_edit_folder'],
-      text_edit_note_title: this.text['text_edit_note_title'],
-      text_edit_content: this.text['text_edit_content'],
-      text_delete: this.text['text_delete'],
-      text_back: this.text['text_back'],
-      text_save: this.text['text_save'],
-      text_settings_title: this.text['text_settings_title'],
-      text_settings_content1: this.text['text_settings_content1'],
-      text_yes: this.text['text_yes'],
-      text_no: this.text['text_no'],
-      text_settings_showedit: this.text['text_settings_showedit'],
-      text_settings_showmove: this.text['text_settings_showmove'],
-      text_settings_showadd: this.text['text_settings_showadd'],
-      text_settings_rows: this.text['text_settings_rows'],
-      text_settings_columns: this.text['text_settings_columns'],
-      text_language: this.text['text_language'],
-      text_close_button: this.text['text_close_button'],
-      text_importexport_title: this.text['text_importexport_title'],
-      text_importexport_content: this.text['text_importexport_content'],
-      text_import: this.text['text_import'],
-      text_export: this.text['text_export'],
-      text_error_loadfile: this.text['text_error_loadfile'],
-      text_error_fileformat: this.text['text_error_fileformat'],
-      text_example_title: this.text['text_example_title'],
-      text_example_content: this.text['text_example_content'],
-      text_open: this.text['text_open'],
-      text_add: this.text['text_add'],
-      text_edit: this.text['text_edit'],
-      text_move_backward: this.text['text_move_backward'],
-      text_move_forward: this.text['text_move_forward'],
-      text_move_upward: this.text['text_move_upward'],
-      text_move_downward: this.text['text_move_downward'],
-      text_help_title: this.text['text_help_title'],
-      text_about_title: this.text['text_about_title'],
-      text_help_content: this.text['text_help_content'],
-      text_about_content1: this.text['text_about_content1'],
-      text_about_content2: this.text['text_about_content2'],
-      text_about_content3: this.text['text_about_content3']
+      language: this.i18n.language,
+      text_appname: defaultText['text_appname'],
+      text_add_label: defaultText['text_add_label'],
+      text_settings_label: defaultText['text_settings_label'],
+      text_importexport_label: defaultText['text_importexport_label'],
+      text_help_label: defaultText['text_help_label'],
+      text_about_label: defaultText['text_about_label'],
+      text_close_label: defaultText['text_close_label'],
+      text_snack_mustbenum: defaultText['text_snack_mustbenum'],
+      text_snack_toobig: defaultText['text_snack_toobig'],
+      text_snack_toosmall: defaultText['text_snack_toosmall'],
+      text_edit_title: defaultText['text_edit_title'],
+      text_edit_type: defaultText['text_edit_type'],
+      text_edit_note: defaultText['text_edit_note'],
+      text_edit_folder: defaultText['text_edit_folder'],
+      text_edit_note_title: defaultText['text_edit_note_title'],
+      text_edit_content: defaultText['text_edit_content'],
+      text_delete: defaultText['text_delete'],
+      text_back: defaultText['text_back'],
+      text_save: defaultText['text_save'],
+      text_settings_title: defaultText['text_settings_title'],
+      text_settings_content1: defaultText['text_settings_content1'],
+      text_yes: defaultText['text_yes'],
+      text_no: defaultText['text_no'],
+      text_settings_showedit: defaultText['text_settings_showedit'],
+      text_settings_showmove: defaultText['text_settings_showmove'],
+      text_settings_showadd: defaultText['text_settings_showadd'],
+      text_settings_rows: defaultText['text_settings_rows'],
+      text_settings_columns: defaultText['text_settings_columns'],
+      text_language: defaultText['text_language'],
+      text_close_button: defaultText['text_close_button'],
+      text_importexport_title: defaultText['text_importexport_title'],
+      text_importexport_content: defaultText['text_importexport_content'],
+      text_import: defaultText['text_import'],
+      text_export: defaultText['text_export'],
+      text_error_loadfile: defaultText['text_error_loadfile'],
+      text_error_fileformat: defaultText['text_error_fileformat'],
+      text_example_title: defaultText['text_example_title'],
+      text_example_content: defaultText['text_example_content'],
+      text_open: defaultText['text_open'],
+      text_add: defaultText['text_add'],
+      text_edit: defaultText['text_edit'],
+      text_move_backward: defaultText['text_move_backward'],
+      text_move_forward: defaultText['text_move_forward'],
+      text_move_upward: defaultText['text_move_upward'],
+      text_move_downward: defaultText['text_move_downward'],
+      text_help_title: defaultText['text_help_title'],
+      text_about_title: defaultText['text_about_title'],
+      text_help_content1: defaultText['text_help_content1'],
+      text_help_content2: defaultText['text_help_content2'],
+      text_help_content3: defaultText['text_help_content3'],
+      text_help_content4: defaultText['text_help_content4'],
+      text_help_content5: defaultText['text_help_content5'],
+      text_help_content6: defaultText['text_help_content6'],
+      text_help_content7: defaultText['text_help_content7'],
+      text_help_content8: defaultText['text_help_content8'],
+      text_about_content1: defaultText['text_about_content1'],
+      text_about_content2: defaultText['text_about_content2'],
+      text_about_content3: defaultText['text_about_content3'],
+      text_about_content4: defaultText['text_about_content4'],
+      text_about_content5: defaultText['text_about_content5'],
+      text_about_content6: defaultText['text_about_content6']
     };
     this.deleteNote = this.deleteNote.bind(this);
     this.addNote = this.addNote.bind(this);
@@ -307,95 +263,165 @@ class NotesList extends React.Component {
     this.importNotesReaderOnload = this.importNotesReaderOnload.bind(this);
     this.importNotes = this.importNotes.bind(this);
     this.exportNotes = this.exportNotes.bind(this);
-    this.i18n_init = this.i18n_init.bind(this);
     this.saveState = this.saveState.bind(this);
     this.notesListRef = React.createRef();
   }
 
   saveState () {
     this.setState({
-      notes: this.notes,
-      cursor: this.cursor,
-      tmptype: this.tmptype,
-      tmptitle: this.tmptitle,
-      tmpcontent: this.tmpcontent,
-      showedit: this.showedit,
-      showmove: this.showmove,
-      showadd: this.showadd,
-      textarearows: this.textarearows,
-      textareacols: this.textareacols,
-      language: this.language,
-      text_appname: this.text['text_appname'],
-      text_add_label: this.text['text_add_label'],
-      text_settings_label: this.text['text_settings_label'],
-      text_importexport_label: this.text['text_importexport_label'],
-      text_help_label: this.text['text_help_label'],
-      text_about_label: this.text['text_about_label'],
-      text_close_label: this.text['text_close_label'],
-      text_snack_mustbenum: this.text['text_snack_mustbenum'],
-      text_snack_toobig: this.text['text_snack_toobig'],
-      text_snack_toosmall: this.text['text_snack_toosmall'],
-      text_edit_title: this.text['text_edit_title'],
-      text_edit_type: this.text['text_edit_type'],
-      text_edit_note: this.text['text_edit_note'],
-      text_edit_folder: this.text['text_edit_folder'],
-      text_edit_note_title: this.text['text_edit_note_title'],
-      text_edit_content: this.text['text_edit_content'],
-      text_delete: this.text['text_delete'],
-      text_back: this.text['text_back'],
-      text_save: this.text['text_save'],
-      text_settings_title: this.text['text_settings_title'],
-      text_settings_content1: this.text['text_settings_content1'],
-      text_yes: this.text['text_yes'],
-      text_no: this.text['text_no'],
-      text_settings_showedit: this.text['text_settings_showedit'],
-      text_settings_showmove: this.text['text_settings_showmove'],
-      text_settings_showadd: this.text['text_settings_showadd'],
-      text_settings_rows: this.text['text_settings_rows'],
-      text_settings_columns: this.text['text_settings_columns'],
-      text_language: this.text['text_language'],
-      text_close_button: this.text['text_close_button'],
-      text_importexport_title: this.text['text_importexport_title'],
-      text_importexport_content: this.text['text_importexport_content'],
-      text_import: this.text['text_import'],
-      text_export: this.text['text_export'],
-      text_error_loadfile: this.text['text_error_loadfile'],
-      text_error_fileformat: this.text['text_error_fileformat'],
-      text_example_title: this.text['text_example_title'],
-      text_example_content: this.text['text_example_content'],
-      text_open: this.text['text_open'],
-      text_add: this.text['text_add'],
-      text_edit: this.text['text_edit'],
-      text_move_backward: this.text['text_move_backward'],
-      text_move_forward: this.text['text_move_forward'],
-      text_move_upward: this.text['text_move_upward'],
-      text_move_downward: this.text['text_move_downward'],
-      text_help_title: this.text['text_help_title'],
-      text_about_title: this.text['text_about_title'],
-      text_help_content: this.text['text_help_content'],
-      text_about_content1: this.text['text_about_content1'],
-      text_about_content2: this.text['text_about_content2'],
-      text_about_content3: this.text['text_about_content3']
-    });
-  }
 
-  i18n_init() {
-    fetch('i18n/' + this.language + '.json')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        } else {
-          return response.json();
-        }
-      })
-      .then((messages) => {
-        this.text = messages;
-        this.saveState();
-        localStorage.setItem('language', this.language);
-      })
-      .catch(error => {
-        console.error('Cannot fetch i18n/' + this.language + '.json: ', error);
+    });
+    if (this.i18n.text) {
+      this.setState({
+        notes: this.notes,
+        cursor: this.cursor,
+        tmptype: this.tmptype,
+        tmptitle: this.tmptitle,
+        tmpcontent: this.tmpcontent,
+        showedit: this.showedit,
+        showmove: this.showmove,
+        showadd: this.showadd,
+        textarearows: this.textarearows,
+        textareacols: this.textareacols,
+        language: this.i18n.language,
+        text_appname: this.i18n.text['text_appname'],
+        text_add_label: this.i18n.text['text_add_label'],
+        text_settings_label: this.i18n.text['text_settings_label'],
+        text_importexport_label: this.i18n.text['text_importexport_label'],
+        text_help_label: this.i18n.text['text_help_label'],
+        text_about_label: this.i18n.text['text_about_label'],
+        text_close_label: this.i18n.text['text_close_label'],
+        text_snack_mustbenum: this.i18n.text['text_snack_mustbenum'],
+        text_snack_toobig: this.i18n.text['text_snack_toobig'],
+        text_snack_toosmall: this.i18n.text['text_snack_toosmall'],
+        text_edit_title: this.i18n.text['text_edit_title'],
+        text_edit_type: this.i18n.text['text_edit_type'],
+        text_edit_note: this.i18n.text['text_edit_note'],
+        text_edit_folder: this.i18n.text['text_edit_folder'],
+        text_edit_note_title: this.i18n.text['text_edit_note_title'],
+        text_edit_content: this.i18n.text['text_edit_content'],
+        text_delete: this.i18n.text['text_delete'],
+        text_back: this.i18n.text['text_back'],
+        text_save: this.i18n.text['text_save'],
+        text_settings_title: this.i18n.text['text_settings_title'],
+        text_settings_content1: this.i18n.text['text_settings_content1'],
+        text_yes: this.i18n.text['text_yes'],
+        text_no: this.i18n.text['text_no'],
+        text_settings_showedit: this.i18n.text['text_settings_showedit'],
+        text_settings_showmove: this.i18n.text['text_settings_showmove'],
+        text_settings_showadd: this.i18n.text['text_settings_showadd'],
+        text_settings_rows: this.i18n.text['text_settings_rows'],
+        text_settings_columns: this.i18n.text['text_settings_columns'],
+        text_language: this.i18n.text['text_language'],
+        text_close_button: this.i18n.text['text_close_button'],
+        text_importexport_title: this.i18n.text['text_importexport_title'],
+        text_importexport_content: this.i18n.text['text_importexport_content'],
+        text_import: this.i18n.text['text_import'],
+        text_export: this.i18n.text['text_export'],
+        text_error_loadfile: this.i18n.text['text_error_loadfile'],
+        text_error_fileformat: this.i18n.text['text_error_fileformat'],
+        text_example_title: this.i18n.text['text_example_title'],
+        text_example_content: this.i18n.text['text_example_content'],
+        text_open: this.i18n.text['text_open'],
+        text_add: this.i18n.text['text_add'],
+        text_edit: this.i18n.text['text_edit'],
+        text_move_backward: this.i18n.text['text_move_backward'],
+        text_move_forward: this.i18n.text['text_move_forward'],
+        text_move_upward: this.i18n.text['text_move_upward'],
+        text_move_downward: this.i18n.text['text_move_downward'],
+        text_help_title: this.i18n.text['text_help_title'],
+        text_about_title: this.i18n.text['text_about_title'],
+        text_help_content1: this.i18n.text['text_help_content1'],
+        text_help_content2: this.i18n.text['text_help_content2'],
+        text_help_content3: this.i18n.text['text_help_content3'],
+        text_help_content4: this.i18n.text['text_help_content4'],
+        text_help_content5: this.i18n.text['text_help_content5'],
+        text_help_content6: this.i18n.text['text_help_content6'],
+        text_help_content7: this.i18n.text['text_help_content7'],
+        text_help_content8: this.i18n.text['text_help_content8'],
+        text_about_content1: this.i18n.text['text_about_content1'],
+        text_about_content2: this.i18n.text['text_about_content2'],
+        text_about_content3: this.i18n.text['text_about_content3'],
+        text_about_content4: this.i18n.text['text_about_content4'],
+        text_about_content5: this.i18n.text['text_about_content5'],
+        text_about_content6: this.i18n.text['text_about_content6']
       });
+    } else {
+      this.setState({
+        notes: this.notes,
+        cursor: this.cursor,
+        tmptype: this.tmptype,
+        tmptitle: this.tmptitle,
+        tmpcontent: this.tmpcontent,
+        showedit: this.showedit,
+        showmove: this.showmove,
+        showadd: this.showadd,
+        textarearows: this.textarearows,
+        textareacols: this.textareacols,
+        language: this.i18n.language,
+        text_appname: defaultText['text_appname'],
+        text_add_label: defaultText['text_add_label'],
+        text_settings_label: defaultText['text_settings_label'],
+        text_importexport_label: defaultText['text_importexport_label'],
+        text_help_label: defaultText['text_help_label'],
+        text_about_label: defaultText['text_about_label'],
+        text_close_label: defaultText['text_close_label'],
+        text_snack_mustbenum: defaultText['text_snack_mustbenum'],
+        text_snack_toobig: defaultText['text_snack_toobig'],
+        text_snack_toosmall: defaultText['text_snack_toosmall'],
+        text_edit_title: defaultText['text_edit_title'],
+        text_edit_type: defaultText['text_edit_type'],
+        text_edit_note: defaultText['text_edit_note'],
+        text_edit_folder: defaultText['text_edit_folder'],
+        text_edit_note_title: defaultText['text_edit_note_title'],
+        text_edit_content: defaultText['text_edit_content'],
+        text_delete: defaultText['text_delete'],
+        text_back: defaultText['text_back'],
+        text_save: defaultText['text_save'],
+        text_settings_title: defaultText['text_settings_title'],
+        text_settings_content1: defaultText['text_settings_content1'],
+        text_yes: defaultText['text_yes'],
+        text_no: defaultText['text_no'],
+        text_settings_showedit: defaultText['text_settings_showedit'],
+        text_settings_showmove: defaultText['text_settings_showmove'],
+        text_settings_showadd: defaultText['text_settings_showadd'],
+        text_settings_rows: defaultText['text_settings_rows'],
+        text_settings_columns: defaultText['text_settings_columns'],
+        text_language: defaultText['text_language'],
+        text_close_button: defaultText['text_close_button'],
+        text_importexport_title: defaultText['text_importexport_title'],
+        text_importexport_content: defaultText['text_importexport_content'],
+        text_import: defaultText['text_import'],
+        text_export: defaultText['text_export'],
+        text_error_loadfile: defaultText['text_error_loadfile'],
+        text_error_fileformat: defaultText['text_error_fileformat'],
+        text_example_title: defaultText['text_example_title'],
+        text_example_content: defaultText['text_example_content'],
+        text_open: defaultText['text_open'],
+        text_add: defaultText['text_add'],
+        text_edit: defaultText['text_edit'],
+        text_move_backward: defaultText['text_move_backward'],
+        text_move_forward: defaultText['text_move_forward'],
+        text_move_upward: defaultText['text_move_upward'],
+        text_move_downward: defaultText['text_move_downward'],
+        text_help_title: defaultText['text_help_title'],
+        text_about_title: defaultText['text_about_title'],
+        text_help_content1: defaultText['text_help_content1'],
+        text_help_content2: defaultText['text_help_content2'],
+        text_help_content3: defaultText['text_help_content3'],
+        text_help_content4: defaultText['text_help_content4'],
+        text_help_content5: defaultText['text_help_content5'],
+        text_help_content6: defaultText['text_help_content6'],
+        text_help_content7: defaultText['text_help_content7'],
+        text_help_content8: defaultText['text_help_content8'],
+        text_about_content1: defaultText['text_about_content1'],
+        text_about_content2: defaultText['text_about_content2'],
+        text_about_content3: defaultText['text_about_content3'],
+        text_about_content4: defaultText['text_about_content4'],
+        text_about_content5: defaultText['text_about_content5'],
+        text_about_content6: defaultText['text_about_content6']
+      });
+    }
   }
 
   componentDidMount() {
@@ -405,7 +431,6 @@ class NotesList extends React.Component {
     let showadd = localStorage.getItem('notes_showadd');
     let textarearows = localStorage.getItem('notes_textarearows');
     let textareacols = localStorage.getItem('notes_textareacols');
-    let language = localStorage.getItem('language');
 
     if (showedit === 'yes' || showedit === 'no') {
       this.showedit = showedit;
@@ -423,19 +448,8 @@ class NotesList extends React.Component {
       this.textareacols = textareacols;
     }
 
-    if (supported_languages.includes(language)) {
-      this.language = language;
-    } else {
-        if (navigator && navigator.languages) {
-            this.language = navigator.languages.find(lang => {return supported_languages.includes(lang)});
-            if (! this.language) {
-                this.language = 'en';
-            }
-        }
-    }
-    
     // Localize the User Interface.
-    this.i18n_init();
+    this.i18n = new I18n(this.saveState);
 
     // Load the notes from localStorage.
     this.loadNotes();
@@ -577,10 +591,7 @@ class NotesList extends React.Component {
         }
         break;
       case 'lang':
-        if (supported_languages.includes(e.target.value)) {
-          this.language = e.target.value;
-          this.i18n_init();
-        }
+        this.i18n.change_language_translate_and_save_to_localStorage(e.target.value);
         break;
       default:
         break;
@@ -626,8 +637,8 @@ class NotesList extends React.Component {
     }
     newNote = {
       type: 'note',
-      title: this.text['text_example_title'] + newCursor,
-      content: this.text['text_example_content'],
+      title: this.i18n.text['text_example_title'] + newCursor,
+      content: this.i18n.text['text_example_content'],
       visible: 1
     };
     tmpnotes.push(newNote);
@@ -904,7 +915,7 @@ class NotesList extends React.Component {
         || newnotes[i].content === undefined
         || newnotes[i].visible === undefined) {
         missingFields = true;
-        alert(this.text['text_error_fileformat']);
+        alert(this.i18n.text['text_error_fileformat']);
         break;
       }
     }
@@ -926,7 +937,7 @@ class NotesList extends React.Component {
     let file = e.target.files[0];
     if (!file) {
       if (e.target.files.length > 0) {
-        alert(this.text['text_error_loadfile']);
+        alert(this.i18n.text['text_error_loadfile']);
       }
       return;
     }
@@ -1332,7 +1343,14 @@ class NotesList extends React.Component {
               <div className="mdc-dialog__surface">
                 <h2 className="mdc-dialog__title" id="help-dialog-title">{this.state.text_help_title}</h2>
                 <div className="mdc-dialog__content" id="help-dialog-content">
-                  {HtmlParse(this.state.text_help_content)}
+                <p>{(this.state.text_help_content1)}</p>
+                <p>{(this.state.text_help_content2)}</p>
+                <p>{(this.state.text_help_content3)}</p>
+                <p>{(this.state.text_help_content4)}</p>
+                <p>{(this.state.text_help_content5)}</p>
+                <p>{(this.state.text_help_content6)}</p>
+                <p>{(this.state.text_help_content7)}</p>
+                <p>{(this.state.text_help_content8)}</p>
                 </div>
                 <footer className="mdc-dialog__actions">
                   <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
@@ -1349,9 +1367,12 @@ class NotesList extends React.Component {
               <div className="mdc-dialog__surface">
                 <h2 className="mdc-dialog__title" id="about-dialog-title">{this.state.text_about_title}</h2>
                 <div className="mdc-dialog__content" id="about-dialog-content">
-                  {HtmlParse(this.state.text_about_content1)}
-                  {HtmlParse(this.state.text_about_content2)}
-                  {HtmlParse(this.state.text_about_content3)}
+                  <p>{this.state.text_about_content1}
+                      <br />{this.state.text_about_content2}</p>
+                  <p>{this.state.text_about_content3}</p>
+                  <p>{this.state.text_about_content4}</p>
+                  <p>{this.state.text_about_content5}</p>
+                  <p>{this.state.text_about_content6}</p>
                 </div>
                 <footer className="mdc-dialog__actions">
                   <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
