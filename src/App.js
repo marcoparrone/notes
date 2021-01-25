@@ -357,7 +357,7 @@ class NotesList extends React.Component {
         showadd: this.showadd,
         textarearows: this.textarearows,
         textareacols: this.textareacols,
-        language: this.i18n.language,
+        language: 'en',
         text_appname: defaultText['text_appname'],
         text_add_label: defaultText['text_add_label'],
         text_settings_label: defaultText['text_settings_label'],
@@ -636,8 +636,8 @@ class NotesList extends React.Component {
     }
     newNote = {
       type: 'note',
-      title: this.i18n.text['text_example_title'] + newCursor,
-      content: this.i18n.text['text_example_content'],
+      title: this.state.text_example_title + newCursor,
+      content: this.state.text_example_content,
       visible: 1
     };
     tmpnotes.push(newNote);
@@ -914,7 +914,7 @@ class NotesList extends React.Component {
         || newnotes[i].content === undefined
         || newnotes[i].visible === undefined) {
         missingFields = true;
-        alert(this.i18n.text['text_error_fileformat']);
+        alert(this.state.text_error_fileformat);
         break;
       }
     }
@@ -936,7 +936,7 @@ class NotesList extends React.Component {
     let file = e.target.files[0];
     if (!file) {
       if (e.target.files.length > 0) {
-        alert(this.i18n.text['text_error_loadfile']);
+        alert(this.state.text_error_loadfile);
       }
       return;
     }
