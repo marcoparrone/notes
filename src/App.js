@@ -1,24 +1,6 @@
 import React from 'react';
 import './App.css';
 
-import '@material/react-top-app-bar/dist/top-app-bar.css';
-import '@material/react-material-icon/dist/material-icon.css';
-
-import TopAppBar, {
-  TopAppBarFixedAdjust,
-  TopAppBarIcon,
-  TopAppBarRow,
-  TopAppBarSection,
-  TopAppBarTitle,
-} from '@material/react-top-app-bar';
-import MaterialIcon from '@material/react-material-icon';
-
-import "@material/snackbar/dist/mdc.snackbar.css";
-import { MDCSnackbar } from '@material/snackbar';
-
-import "@material/dialog/dist/mdc.dialog.css";
-import { MDCDialog } from '@material/dialog';
-
 import "@material/card/dist/mdc.card.css";
 
 import I18n from '@marcoparrone/i18n';
@@ -28,6 +10,12 @@ import saveAs from 'file-saver';
 import get_timestamp from './timestamp';
 
 import LanguageSelector from '@marcoparrone/react-language-selector';
+
+import {Dialog, open_dialog} from '@marcoparrone/dialog';
+
+import AppWithTopBar from '@marcoparrone/appwithtopbar';
+
+import {Snackbar, open_snackbar} from './snackbar';
 
 const defaultText = require ('./en.json');
 
@@ -255,10 +243,6 @@ class NotesList extends React.Component {
     this.moveforwardNote = this.moveforwardNote.bind(this);
     this.moveupwardNote = this.moveupwardNote.bind(this);
     this.movedownwardNote = this.movedownwardNote.bind(this);
-    this.about = this.about.bind(this);
-    this.help = this.help.bind(this);
-    this.Settings = this.Settings.bind(this);
-    this.importExportNotes = this.importExportNotes.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSettingsChange = this.handleSettingsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -458,26 +442,6 @@ class NotesList extends React.Component {
 
   }
 
-  Settings() {
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#settings'));
-    dialog.open();
-  }
-
-  importExportNotes() {
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#impexp'));
-    dialog.open();
-  }
-
-  help() {
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#help'));
-    dialog.open();
-  }
-
-  about() {
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#about'));
-    dialog.open();
-  }
-
   saveNotes() {
     let newNotes = [];
 
@@ -535,9 +499,6 @@ class NotesList extends React.Component {
   }
 
   handleSettingsChange(e) {
-    const snackbarMBN = new MDCSnackbar(this.notesListRef.current.querySelector('#mustBeNum'));
-    const snackbarTB = new MDCSnackbar(this.notesListRef.current.querySelector('#tooBig'));
-    const snackbarTS = new MDCSnackbar(this.notesListRef.current.querySelector('#tooSmall'));
     let tmpint = 0;
 
     switch (e.target.name) {
@@ -561,13 +522,13 @@ class NotesList extends React.Component {
         break;
       case 'textarearows':
         if (isNaN(e.target.value) || e.target.value === "") {
-          snackbarMBN.open();
+          open_snackbar (this.notesListRef, 'mustBeNum');
         } else {
           tmpint = parseInt(e.target.value);
           if (tmpint > 1000) {
-            snackbarTB.open();
+            open_snackbar (this.notesListRef, 'tooBig');
           } else if (tmpint < 1) {
-            snackbarTS.open();
+            open_snackbar (this.notesListRef, 'tooSmall');
           } else {
             this.textarearows = e.target.value;
             localStorage.setItem('notes_textarearows', this.textarearows);
@@ -576,13 +537,13 @@ class NotesList extends React.Component {
         break;
       case 'textareacols':
         if (isNaN(e.target.value) || e.target.value === "") {
-          snackbarMBN.open();
+          open_snackbar (this.notesListRef, 'mustBeNum');
         } else {
           tmpint = parseInt(e.target.value);
           if (tmpint > 1000) {
-            snackbarTB.open();
+            open_snackbar (this.notesListRef, 'tooBig');
           } else if (tmpint < 1) {
-            snackbarTS.open();
+            open_snackbar (this.notesListRef, 'tooSmall');
           } else {
             this.textareacols = e.target.value;
             localStorage.setItem('notes_textareacols', this.textareacols);
@@ -659,8 +620,7 @@ class NotesList extends React.Component {
     this.tmptitle = note.title;
     this.tmpcontent = note.content;
     this.saveState();
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#opennote'));
-    dialog.open();
+    open_dialog(this.notesListRef, 'opennote');
   }
 
   editNote(cursor) {
@@ -677,8 +637,7 @@ class NotesList extends React.Component {
     this.tmptitle = note.title;
     this.tmpcontent = note.content;
     this.saveState();
-    const dialog = new MDCDialog(this.notesListRef.current.querySelector('#editnote'));
-    dialog.open();
+    open_dialog(this.notesListRef, 'editnote');
   }
 
   swapNotes(a, b) {
@@ -996,279 +955,102 @@ class NotesList extends React.Component {
       }
     }
     return (
-      <div ref={this.notesListRef} lang={this.state.language}>
-        <TopAppBar>
-          <TopAppBarRow>
-            <TopAppBarSection align='start'>
-              <TopAppBarTitle>{this.state.text_appname}</TopAppBarTitle>
-            </TopAppBarSection>
-            <TopAppBarSection align='end' role='toolbar'>
-              <TopAppBarIcon actionItem tabIndex={0}>
-                <MaterialIcon
-                  aria-label={this.state.text_add_label}
-                  hasRipple
-                  icon='add'
-                  onClick={() => this.addNote()}
-                />
-              </TopAppBarIcon>
-              <TopAppBarIcon actionItem tabIndex={0}>
-                <MaterialIcon
-                  aria-label={this.state.text_settings_label}
-                  hasRipple
-                  icon='settings'
-                  onClick={() => this.Settings()}
-                />
-              </TopAppBarIcon>
-              <TopAppBarIcon actionItem tabIndex={0}>
-                <MaterialIcon
-                  aria-label={this.state.text_importexport_label}
-                  hasRipple
-                  icon='import_export'
-                  onClick={() => this.importExportNotes()}
-                />
-              </TopAppBarIcon>
-              <TopAppBarIcon actionItem tabIndex={0}>
-                <MaterialIcon
-                  aria-label={this.state.text_help_label}
-                  hasRipple
-                  icon='help'
-                  onClick={() => this.help()}
-                />
-              </TopAppBarIcon>
-              <TopAppBarIcon actionItem tabIndex={0}>
-                <MaterialIcon
-                  aria-label={this.state.text_about_label}
-                  hasRipple
-                  icon='info'
-                  onClick={() => this.about()}
-                />
-              </TopAppBarIcon>
-            </TopAppBarSection>
-          </TopAppBarRow>
-        </TopAppBar>
-        <TopAppBarFixedAdjust>
-
+			<AppWithTopBar refprop={this.notesListRef} lang={this.state.language} appname={this.state.text_appname}
+			  icons={[{label: this.state.text_add_label, icon: 'add', callback: () => this.addNote()},
+								{label: this.state.text_settings_label, icon: 'settings', callback: () => open_dialog(this.notesListRef, 'settings')},
+								{label: this.state.text_importexport_label, icon: 'import_export', callback: () => open_dialog(this.notesListRef, 'impexp')},
+								{label: this.state.text_help_label, icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
+								{label: this.state.text_about_label, icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
           <section className="notesSection">
             {notesRepresentation}
           </section>
-
-          <div className="mdc-snackbar" id="mustBeNum"><div className="mdc-snackbar__surface"><div className="mdc-snackbar__label" role="status" aria-live="polite">{this.state.text_snack_mustbenum}</div></div></div>
-          <div className="mdc-snackbar" id="tooBig"><div className="mdc-snackbar__surface"><div className="mdc-snackbar__label" role="status" aria-live="polite">{this.state.text_snack_toobig}</div></div></div>
-          <div className="mdc-snackbar" id="tooSmall"><div className="mdc-snackbar__surface"><div className="mdc-snackbar__label" role="status" aria-live="polite">{this.state.text_snack_toosmall}</div></div></div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="opennote">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="opennote-dialog-title">{this.state.tmptitle}</h2>
-                <div className="mdc-dialog__content" id="opennote-dialog-content">
-                  <pre>{this.state.tmpcontent}</pre>
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <input type="submit" value={this.state.text_close_label} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                </footer>
-              </div>
-            </div>
-          </div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="editnote">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="editnote-dialog-title">{this.state.text_edit_title}</h2>
-                <div className="mdc-dialog__content" id="editnote-dialog-content">
-
-                  <label>{this.state.text_edit_type}
-                    <input type="radio"
-                      id="abktypenote"
-                      name="tmptype"
-                      value="note"
-                      checked={this.state.tmptype === 'note'}
-                      onChange={this.handleInputChange}>
-                    </input>{this.state.text_edit_note}
-                    <input type="radio"
-                      id="abktypefolder"
-                      name="tmptype"
-                      value="folder"
-                      checked={this.state.tmptype === 'folder'}
-                      onChange={this.handleInputChange}>
-                    </input>{this.state.text_edit_folder}
-                  </label><br />
-                  <label>{this.state.text_edit_note_title}
-                    <input type="text"
-                      id="abktitle"
-                      name="tmptitle"
-                      value={this.state.tmptitle}
-                      onChange={this.handleInputChange}>
-                    </input>
-                  </label><br />
-                  {this.state.tmptype === 'note' &&
-                    <label>{this.state.text_edit_content}<br />
-                      <textarea type="text"
-                        id="abkcontent"
-                        name="tmpcontent"
-                        value={this.state.tmpcontent}
-                        rows={this.state.textarearows}
-                        cols={this.state.textareacols}
-                        onChange={this.handleInputChange} />
-                    </label>
-                  }
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <input type="submit" value={this.state.text_delete} onClick={event => this.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+          <Snackbar id="mustBeNum">{this.state.text_snack_mustbenum}</Snackbar>
+          <Snackbar id="tooBig">{this.state.text_snack_toobig}</Snackbar>
+          <Snackbar id="tooSmall">{this.state.text_snack_toosmall}</Snackbar>
+          <Dialog id="opennote" title={this.state.tmptitle} text_close_button={this.state.text_close_button} >
+            <pre>{this.state.tmpcontent}</pre>
+          </Dialog>
+          <Dialog id="editnote" title={this.state.text_edit_title}
+                  actions={(<span><input type="submit" value={this.state.text_delete} onClick={event => this.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
                   <input type="submit" value={this.state.text_back} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text_save} onClick={event => this.handleSubmit(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                </footer>
-              </div>
-            </div>
-          </div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="settings">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="settings-dialog-title">{this.state.text_settings_title}</h2>
-                <div className="mdc-dialog__content" id="settings-dialog-content">
-                  <p>{this.state.text_settings_content1}</p>
-                  <label>{this.state.text_settings_showedit}
-                    <input type="radio"
-                      id="showedityes"
-                      name="showedit"
-                      value="yes"
-                      checked={this.state.showedit === 'yes'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_yes}
-                    <input type="radio"
-                      id="showeditno"
-                      name="showedit"
-                      value="no"
-                      checked={this.state.showedit === 'no'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_no}
-                  </label><br />
-
-                  <label>{this.state.text_settings_showmove}
-                    <input type="radio"
-                      id="showmoveyes"
-                      name="showmove"
-                      value="yes"
-                      checked={this.state.showmove === 'yes'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_yes}
-                    <input type="radio"
-                      id="showmoveno"
-                      name="showmove"
-                      value="no"
-                      checked={this.state.showmove === 'no'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_no}
-                  </label><br />
-
-                  <label>{this.state.text_settings_showadd}
-                    <input type="radio"
-                      id="showaddyes"
-                      name="showadd"
-                      value="yes"
-                      checked={this.state.showadd === 'yes'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_yes}
-                    <input type="radio"
-                      id="showaddno"
-                      name="showadd"
-                      value="no"
-                      checked={this.state.showadd === 'no'}
-                      onChange={this.handleSettingsChange}>
-                    </input>{this.state.text_no}
-                  </label><br />
-
-                  <label>{this.state.text_settings_rows}
-                    <input type="text"
-                      id="textarearows"
-                      name="textarearows"
-                      value={this.state.textarearows}
-                      onChange={this.handleSettingsChange}>
-                    </input>
-                  </label><br />
-
-                  <label>{this.state.text_settings_columns}
-                    <input type="text"
-                      id="textareacols"
-                      name="textareacols"
-                      value={this.state.textareacols}
-                      onChange={this.handleSettingsChange}>
-                    </input>
-                  </label><br />
-                  <LanguageSelector text_language={this.state.text_language} language={this.state.language} handleSettingsChange={this.handleSettingsChange} />
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                    <span className="mdc-button__label">{this.state.text_close_button}</span>
-                  </button>
-                </footer>
-              </div>
-            </div>
-          </div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="impexp">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="impexp-dialog-title">{this.state.text_importexport_title}</h2>
-                <div className="mdc-dialog__content" id="impexp-dialog-content">
-                  <p>{this.state.text_importexport_content}</p>
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <label>{this.state.text_import}&nbsp;<input type="file" onChange={e => this.importNotes(e)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></label>
-                  <input type="submit" value={this.state.text_back} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text_export} onClick={event => this.exportNotes()} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                </footer>
-              </div>
-            </div>
-          </div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="help">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="help-dialog-title">{this.state.text_help_title}</h2>
-                <div className="mdc-dialog__content" id="help-dialog-content">
-                <p>{this.state.text_help_content1}</p>
-                <p>{this.state.text_help_content2}</p>
-                <p>{this.state.text_help_content3}</p>
-                <p>{this.state.text_help_content4}</p>
-                <p>{this.state.text_help_content5}</p>
-                <p>{this.state.text_help_content6}</p>
-                <p>{this.state.text_help_content7}</p>
-                <p>{this.state.text_help_content8}</p>
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                    <span className="mdc-button__label">{this.state.text_close_button}</span>
-                  </button>
-                </footer>
-              </div>
-              <div className="mdc-dialog__scrim"></div>
-            </div>
-          </div>
-
-          <div className="mdc-dialog" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title" aria-describedby="my-dialog-content" id="about">
-            <div className="mdc-dialog__container">
-              <div className="mdc-dialog__surface">
-                <h2 className="mdc-dialog__title" id="about-dialog-title">{this.state.text_about_title}</h2>
-                <div className="mdc-dialog__content" id="about-dialog-content">
-                  <p>{this.state.text_about_content1}
-                      <br />{this.state.text_about_content2}</p>
-                  <p>{this.state.text_about_content3}</p>
-                  <p>{this.state.text_about_content4}</p>
-                  <p>{this.state.text_about_content5}</p>
-                  <p>{this.state.text_about_content6}</p>
-                </div>
-                <footer className="mdc-dialog__actions">
-                  <button type="button" className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes">
-                    <span className="mdc-button__label">{this.state.text_close_button}</span>
-                  </button>
-                </footer>
-              </div>
-            </div>
-            <div className="mdc-dialog__scrim"></div>
-          </div>
-        </TopAppBarFixedAdjust>
-      </div >
+                  <input type="submit" value={this.state.text_save} onClick={event => this.handleSubmit(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
+            <label>{this.state.text_edit_type}
+              <input type="radio" id="abktypenote" name="tmptype" value="note" checked={this.state.tmptype === 'note'} onChange={this.handleInputChange}>
+              </input>{this.state.text_edit_note}
+              <input type="radio" id="abktypefolder" name="tmptype" value="folder" checked={this.state.tmptype === 'folder'} onChange={this.handleInputChange}>
+              </input>{this.state.text_edit_folder}
+            </label><br />
+            <label>{this.state.text_edit_note_title}
+              <input type="text" id="abktitle" name="tmptitle" value={this.state.tmptitle} onChange={this.handleInputChange}></input>
+            </label><br />
+            {this.state.tmptype === 'note' &&
+              <label>{this.state.text_edit_content}<br />
+                <textarea type="text"
+                  id="abkcontent"
+                  name="tmpcontent"
+                  value={this.state.tmpcontent}
+                  rows={this.state.textarearows}
+                  cols={this.state.textareacols}
+                  onChange={this.handleInputChange} />
+              </label>
+            }
+          </Dialog>
+          <Dialog id="settings" title={this.state.text_settings_title} text_close_button={this.state.text_close_button} >
+            <p>{this.state.text_settings_content1}</p>
+            <label>{this.state.text_settings_showedit}
+              <input type="radio" id="showedityes" name="showedit" value="yes" checked={this.state.showedit === 'yes'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_yes}
+              <input type="radio" id="showeditno" name="showedit" value="no" checked={this.state.showedit === 'no'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_no}
+            </label><br />
+            <label>{this.state.text_settings_showmove}
+              <input type="radio" id="showmoveyes" name="showmove" value="yes" checked={this.state.showmove === 'yes'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_yes}
+              <input type="radio" id="showmoveno" name="showmove" value="no" checked={this.state.showmove === 'no'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_no}
+            </label><br />
+            <label>{this.state.text_settings_showadd}
+              <input type="radio" id="showaddyes" name="showadd" value="yes" checked={this.state.showadd === 'yes'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_yes}
+              <input type="radio" id="showaddno" name="showadd" value="no" checked={this.state.showadd === 'no'} onChange={this.handleSettingsChange}>
+              </input>{this.state.text_no}
+            </label><br />
+            <label>{this.state.text_settings_rows}
+              <input type="text" id="textarearows" name="textarearows" value={this.state.textarearows} onChange={this.handleSettingsChange}></input>
+            </label><br />
+            <label>{this.state.text_settings_columns}
+              <input type="text" id="textareacols" name="textareacols" value={this.state.textareacols} onChange={this.handleSettingsChange}></input>
+            </label><br />
+            <LanguageSelector text_language={this.state.text_language} language={this.state.language} handleSettingsChange={this.handleSettingsChange} />
+          </Dialog>
+          <Dialog id="impexp" title={this.state.text_importexport_title}
+                  actions={(<span>
+                    <label>{this.state.text_import}
+                    &nbsp;
+                    <input type="file" onChange={e => this.importNotes(e)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></label>
+                    <input type="submit" value={this.state.text_back} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+                    <input type="submit" value={this.state.text_export} onClick={event => this.exportNotes()} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)} >
+            <p>{this.state.text_importexport_content}</p>
+          </Dialog>
+          <Dialog id="help" title={this.state.text_help_title} text_close_button={this.state.text_close_button} >
+            <p>{this.state.text_help_content1}</p>
+            <p>{this.state.text_help_content2}</p>
+            <p>{this.state.text_help_content3}</p>
+            <p>{this.state.text_help_content4}</p>
+            <p>{this.state.text_help_content5}</p>
+            <p>{this.state.text_help_content6}</p>
+            <p>{this.state.text_help_content7}</p>
+            <p>{this.state.text_help_content8}</p>
+          </Dialog>
+          <Dialog id="about" title={this.state.text_about_title} text_close_button={this.state.text_close_button} >
+            <p>{this.state.text_about_content1}
+                <br />{this.state.text_about_content2}</p>
+            <p>{this.state.text_about_content3}</p>
+            <p>{this.state.text_about_content4}</p>
+            <p>{this.state.text_about_content5}</p>
+            <p>{this.state.text_about_content6}</p>
+          </Dialog>
+        </AppWithTopBar>
     );
   }
 }
