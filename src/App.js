@@ -18,6 +18,8 @@ import AppWithTopBar from '@marcoparrone/appwithtopbar';
 
 import {Snackbar, open_snackbar} from '@marcoparrone/snackbar';
 
+import IconButton from './iconbutton';
+
 const defaultText = require ('./en.json');
 
 class Note extends React.Component {
@@ -28,20 +30,11 @@ class Note extends React.Component {
     let keyprefix = "Note" + this.props.id;
     if (this.props.type === 'note') {
       content.push(<label key={keyprefix}>{this.props.title}&nbsp;
-          <button
-          key={keyprefix + "OpenButton"}
-          aria-pressed="false"
-          aria-label={this.props.text_open}
-          title={this.props.text_open}
-          onClick={event => this.props.openNote(this.props.id)}>
-          <i className="material-icons mdc-icon-button__icon">open_in_new</i>
-        </button>
+        <IconButton key={keyprefix + "-OpenButton"} label={this.props.text_open} icon='open_in_new' callback={event => this.props.openNote(this.props.id)} />;
       </label>);
     } else {
       content.push(<label key={keyprefix + "Label"}>{this.props.title}: </label>);
-
       content.push(<br key={keyprefix + "Br"} />);
-
       if (this.props.children !== undefined && this.props.children !== null && this.props.children !== []) {
         count = this.props.children.length;
         for (let i = 0; i < count; i++) {
@@ -64,76 +57,24 @@ class Note extends React.Component {
               moveforwardNote={this.props.moveforwardNote}
               moveupwardNote={this.props.moveupwardNote}
               movedownwardNote={this.props.movedownwardNote}
-              text_open={this.props.text_open}
-              text_add={this.props.text_add}
-              text_edit={this.props.text_edit}
-              text_move_backward={this.props.text_move_backward}
-              text_move_forward={this.props.text_move_forward}
-              text_move_upward={this.props.text_move_upward}
-              text_move_downward={this.props.text_move_downward}
+              text={this.props.text}
             />);
           }
         }
       }
-
       if (this.props.showadd === 'yes') {
-        content.push(<button
-          key={keyprefix + "AddButton"}
-          aria-pressed="false"
-          aria-label={this.props.text_add}
-          title={this.props.text_add}
-          onClick={event => this.props.addNote(this.props.id)}>
-          <i className="material-icons mdc-icon-button__icon">add</i>
-        </button>);
+        content.push(<IconButton key={keyprefix + "-AddButton"} label={this.props.text_add} icon='add' callback={event => this.props.addNote(this.props.id)} />);
       }
     }
-
     if (this.props.showedit === 'yes') {
-      content.push(<button
-        key={keyprefix + "EditButton"}
-        aria-pressed="false"
-        aria-label={this.props.text_edit}
-        title={this.props.text_edit}
-        onClick={event => this.props.editNote(this.props.id)}>
-        <i className="material-icons mdc-icon-button__icon">edit</i>
-      </button>);
+      content.push(<IconButton key={keyprefix + "-EditButton"} label={this.props.text_edit} icon='edit' callback={event => this.props.editNote(this.props.id)} />);
     }
-
     if (this.props.showmove === 'yes') {
-      content.push(<button
-        key={keyprefix + "BackwardButton"}
-        aria-pressed="false"
-        aria-label={this.props.text_move_backward}
-        title={this.props.text_move_backward}
-        onClick={event => this.props.movebackwardNote(this.props.id)}>
-        <i className="material-icons mdc-icon-button__icon">keyboard_arrow_left</i>
-      </button>);
-      content.push(<button
-        key={keyprefix + "ForwardButton"}
-        aria-pressed="false"
-        aria-label={this.props.text_move_forward}
-        title={this.props.text_move_forward}
-        onClick={event => this.props.moveforwardNote(this.props.id)}>
-        <i className="material-icons mdc-icon-button__icon">keyboard_arrow_right</i>
-      </button>);
-      content.push(<button
-        key={keyprefix + "UpwardButton"}
-        aria-pressed="false"
-        aria-label={this.props.text_move_upward}
-        title={this.props.text_move_upward}
-        onClick={event => this.props.moveupwardNote(this.props.id)}>
-        <i className="material-icons mdc-icon-button__icon">keyboard_arrow_up</i>
-      </button>);
-      content.push(<button
-        key={keyprefix + "DownwardButton"}
-        aria-pressed="false"
-        aria-label={this.props.text_move_downward}
-        title={this.props.text_move_downward}
-        onClick={event => this.props.movedownwardNote(this.props.id)}>
-        <i className="material-icons mdc-icon-button__icon">keyboard_arrow_down</i>
-      </button>);
+      content.push(<IconButton key={keyprefix + "-BackwardButton"} label={this.props.text_move_backward} icon='keyboard_arrow_left' callback={event => this.props.movebackwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-ForwardButton"} label={this.props.text_move_forward} icon='keyboard_arrow_right' callback={event => this.props.moveforwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-UpwardButton"} label={this.props.text_move_upward} icon='keyboard_arrow_up' callback={event => this.props.moveupwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-DownwardButton"} label={this.props.text_move_downward} icon='keyboard_arrow_down' callback={event => this.props.movedownwardNote(this.props.id)} />);
     }
-
     return (
       <div className="mdc-card  mdc-card--outlined" key={keyprefix + "Card"}>
         <div className="card-body mdc-typography--body2">
@@ -771,13 +712,7 @@ class NotesList extends React.Component {
             moveforwardNote={this.moveforwardNote}
             moveupwardNote={this.moveupwardNote}
             movedownwardNote={this.movedownwardNote}
-            text={this.state.text['text_open']}
-            text_add={this.state.text['text_add']}
-            text_edit={this.state.text['text_edit']}
-            text_move_backward={this.state.text['text_move_backward']}
-            text_move_forward={this.state.text['text_move_forward']}
-            text_move_upward={this.state.text['text_move_upward']}
-            text_move_downward={this.state.text['text_move_downward']}
+            text={this.state.text}
           />);
       }
     }

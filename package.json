@@ -10,7 +10,7 @@
 			"license": "MIT",
 			"dependencies": {
 						"@marcoparrone/appwithtopbar": "^1.0.0",
-						"@marcoparrone/dialog": "^1.0.1",
+						"@marcoparrone/dialog": "^1.0.2",
 						"@marcoparrone/i18n": "^1.0.3",
 						"@marcoparrone/react-language-selector": "^1.0.4",
 						"@marcoparrone/snackbar": "^1.0.1",
