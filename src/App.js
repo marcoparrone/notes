@@ -173,67 +173,7 @@ class NotesList extends React.Component {
       textarearows: this.textarearows,
       textareacols: this.textareacols,
       language: this.i18n.language,
-      text_appname: defaultText['text_appname'],
-      text_add_label: defaultText['text_add_label'],
-      text_settings_label: defaultText['text_settings_label'],
-      text_importexport_label: defaultText['text_importexport_label'],
-      text_help_label: defaultText['text_help_label'],
-      text_about_label: defaultText['text_about_label'],
-      text_close_label: defaultText['text_close_label'],
-      text_snack_mustbenum: defaultText['text_snack_mustbenum'],
-      text_snack_toobig: defaultText['text_snack_toobig'],
-      text_snack_toosmall: defaultText['text_snack_toosmall'],
-      text_edit_title: defaultText['text_edit_title'],
-      text_edit_type: defaultText['text_edit_type'],
-      text_edit_note: defaultText['text_edit_note'],
-      text_edit_folder: defaultText['text_edit_folder'],
-      text_edit_note_title: defaultText['text_edit_note_title'],
-      text_edit_content: defaultText['text_edit_content'],
-      text_delete: defaultText['text_delete'],
-      text_back: defaultText['text_back'],
-      text_save: defaultText['text_save'],
-      text_settings_title: defaultText['text_settings_title'],
-      text_settings_content1: defaultText['text_settings_content1'],
-      text_yes: defaultText['text_yes'],
-      text_no: defaultText['text_no'],
-      text_settings_showedit: defaultText['text_settings_showedit'],
-      text_settings_showmove: defaultText['text_settings_showmove'],
-      text_settings_showadd: defaultText['text_settings_showadd'],
-      text_settings_rows: defaultText['text_settings_rows'],
-      text_settings_columns: defaultText['text_settings_columns'],
-      text_language: defaultText['text_language'],
-      text_close_button: defaultText['text_close_button'],
-      text_importexport_title: defaultText['text_importexport_title'],
-      text_importexport_content: defaultText['text_importexport_content'],
-      text_import: defaultText['text_import'],
-      text_export: defaultText['text_export'],
-      text_error_loadfile: defaultText['text_error_loadfile'],
-      text_error_fileformat: defaultText['text_error_fileformat'],
-      text_example_title: defaultText['text_example_title'],
-      text_example_content: defaultText['text_example_content'],
-      text_open: defaultText['text_open'],
-      text_add: defaultText['text_add'],
-      text_edit: defaultText['text_edit'],
-      text_move_backward: defaultText['text_move_backward'],
-      text_move_forward: defaultText['text_move_forward'],
-      text_move_upward: defaultText['text_move_upward'],
-      text_move_downward: defaultText['text_move_downward'],
-      text_help_title: defaultText['text_help_title'],
-      text_about_title: defaultText['text_about_title'],
-      text_help_content1: defaultText['text_help_content1'],
-      text_help_content2: defaultText['text_help_content2'],
-      text_help_content3: defaultText['text_help_content3'],
-      text_help_content4: defaultText['text_help_content4'],
-      text_help_content5: defaultText['text_help_content5'],
-      text_help_content6: defaultText['text_help_content6'],
-      text_help_content7: defaultText['text_help_content7'],
-      text_help_content8: defaultText['text_help_content8'],
-      text_about_content1: defaultText['text_about_content1'],
-      text_about_content2: defaultText['text_about_content2'],
-      text_about_content3: defaultText['text_about_content3'],
-      text_about_content4: defaultText['text_about_content4'],
-      text_about_content5: defaultText['text_about_content5'],
-      text_about_content6: defaultText['text_about_content6']
+      text: defaultText
     };
     this.deleteNote = this.deleteNote.bind(this);
     this.addNote = this.addNote.bind(this);
@@ -268,67 +208,7 @@ class NotesList extends React.Component {
         textarearows: this.textarearows,
         textareacols: this.textareacols,
         language: this.i18n.language,
-        text_appname: this.i18n.text['text_appname'],
-        text_add_label: this.i18n.text['text_add_label'],
-        text_settings_label: this.i18n.text['text_settings_label'],
-        text_importexport_label: this.i18n.text['text_importexport_label'],
-        text_help_label: this.i18n.text['text_help_label'],
-        text_about_label: this.i18n.text['text_about_label'],
-        text_close_label: this.i18n.text['text_close_label'],
-        text_snack_mustbenum: this.i18n.text['text_snack_mustbenum'],
-        text_snack_toobig: this.i18n.text['text_snack_toobig'],
-        text_snack_toosmall: this.i18n.text['text_snack_toosmall'],
-        text_edit_title: this.i18n.text['text_edit_title'],
-        text_edit_type: this.i18n.text['text_edit_type'],
-        text_edit_note: this.i18n.text['text_edit_note'],
-        text_edit_folder: this.i18n.text['text_edit_folder'],
-        text_edit_note_title: this.i18n.text['text_edit_note_title'],
-        text_edit_content: this.i18n.text['text_edit_content'],
-        text_delete: this.i18n.text['text_delete'],
-        text_back: this.i18n.text['text_back'],
-        text_save: this.i18n.text['text_save'],
-        text_settings_title: this.i18n.text['text_settings_title'],
-        text_settings_content1: this.i18n.text['text_settings_content1'],
-        text_yes: this.i18n.text['text_yes'],
-        text_no: this.i18n.text['text_no'],
-        text_settings_showedit: this.i18n.text['text_settings_showedit'],
-        text_settings_showmove: this.i18n.text['text_settings_showmove'],
-        text_settings_showadd: this.i18n.text['text_settings_showadd'],
-        text_settings_rows: this.i18n.text['text_settings_rows'],
-        text_settings_columns: this.i18n.text['text_settings_columns'],
-        text_language: this.i18n.text['text_language'],
-        text_close_button: this.i18n.text['text_close_button'],
-        text_importexport_title: this.i18n.text['text_importexport_title'],
-        text_importexport_content: this.i18n.text['text_importexport_content'],
-        text_import: this.i18n.text['text_import'],
-        text_export: this.i18n.text['text_export'],
-        text_error_loadfile: this.i18n.text['text_error_loadfile'],
-        text_error_fileformat: this.i18n.text['text_error_fileformat'],
-        text_example_title: this.i18n.text['text_example_title'],
-        text_example_content: this.i18n.text['text_example_content'],
-        text_open: this.i18n.text['text_open'],
-        text_add: this.i18n.text['text_add'],
-        text_edit: this.i18n.text['text_edit'],
-        text_move_backward: this.i18n.text['text_move_backward'],
-        text_move_forward: this.i18n.text['text_move_forward'],
-        text_move_upward: this.i18n.text['text_move_upward'],
-        text_move_downward: this.i18n.text['text_move_downward'],
-        text_help_title: this.i18n.text['text_help_title'],
-        text_about_title: this.i18n.text['text_about_title'],
-        text_help_content1: this.i18n.text['text_help_content1'],
-        text_help_content2: this.i18n.text['text_help_content2'],
-        text_help_content3: this.i18n.text['text_help_content3'],
-        text_help_content4: this.i18n.text['text_help_content4'],
-        text_help_content5: this.i18n.text['text_help_content5'],
-        text_help_content6: this.i18n.text['text_help_content6'],
-        text_help_content7: this.i18n.text['text_help_content7'],
-        text_help_content8: this.i18n.text['text_help_content8'],
-        text_about_content1: this.i18n.text['text_about_content1'],
-        text_about_content2: this.i18n.text['text_about_content2'],
-        text_about_content3: this.i18n.text['text_about_content3'],
-        text_about_content4: this.i18n.text['text_about_content4'],
-        text_about_content5: this.i18n.text['text_about_content5'],
-        text_about_content6: this.i18n.text['text_about_content6']
+        text: this.i18n.text
       });
     } else {
       this.setState({
@@ -343,67 +223,7 @@ class NotesList extends React.Component {
         textarearows: this.textarearows,
         textareacols: this.textareacols,
         language: 'en',
-        text_appname: defaultText['text_appname'],
-        text_add_label: defaultText['text_add_label'],
-        text_settings_label: defaultText['text_settings_label'],
-        text_importexport_label: defaultText['text_importexport_label'],
-        text_help_label: defaultText['text_help_label'],
-        text_about_label: defaultText['text_about_label'],
-        text_close_label: defaultText['text_close_label'],
-        text_snack_mustbenum: defaultText['text_snack_mustbenum'],
-        text_snack_toobig: defaultText['text_snack_toobig'],
-        text_snack_toosmall: defaultText['text_snack_toosmall'],
-        text_edit_title: defaultText['text_edit_title'],
-        text_edit_type: defaultText['text_edit_type'],
-        text_edit_note: defaultText['text_edit_note'],
-        text_edit_folder: defaultText['text_edit_folder'],
-        text_edit_note_title: defaultText['text_edit_note_title'],
-        text_edit_content: defaultText['text_edit_content'],
-        text_delete: defaultText['text_delete'],
-        text_back: defaultText['text_back'],
-        text_save: defaultText['text_save'],
-        text_settings_title: defaultText['text_settings_title'],
-        text_settings_content1: defaultText['text_settings_content1'],
-        text_yes: defaultText['text_yes'],
-        text_no: defaultText['text_no'],
-        text_settings_showedit: defaultText['text_settings_showedit'],
-        text_settings_showmove: defaultText['text_settings_showmove'],
-        text_settings_showadd: defaultText['text_settings_showadd'],
-        text_settings_rows: defaultText['text_settings_rows'],
-        text_settings_columns: defaultText['text_settings_columns'],
-        text_language: defaultText['text_language'],
-        text_close_button: defaultText['text_close_button'],
-        text_importexport_title: defaultText['text_importexport_title'],
-        text_importexport_content: defaultText['text_importexport_content'],
-        text_import: defaultText['text_import'],
-        text_export: defaultText['text_export'],
-        text_error_loadfile: defaultText['text_error_loadfile'],
-        text_error_fileformat: defaultText['text_error_fileformat'],
-        text_example_title: defaultText['text_example_title'],
-        text_example_content: defaultText['text_example_content'],
-        text_open: defaultText['text_open'],
-        text_add: defaultText['text_add'],
-        text_edit: defaultText['text_edit'],
-        text_move_backward: defaultText['text_move_backward'],
-        text_move_forward: defaultText['text_move_forward'],
-        text_move_upward: defaultText['text_move_upward'],
-        text_move_downward: defaultText['text_move_downward'],
-        text_help_title: defaultText['text_help_title'],
-        text_about_title: defaultText['text_about_title'],
-        text_help_content1: defaultText['text_help_content1'],
-        text_help_content2: defaultText['text_help_content2'],
-        text_help_content3: defaultText['text_help_content3'],
-        text_help_content4: defaultText['text_help_content4'],
-        text_help_content5: defaultText['text_help_content5'],
-        text_help_content6: defaultText['text_help_content6'],
-        text_help_content7: defaultText['text_help_content7'],
-        text_help_content8: defaultText['text_help_content8'],
-        text_about_content1: defaultText['text_about_content1'],
-        text_about_content2: defaultText['text_about_content2'],
-        text_about_content3: defaultText['text_about_content3'],
-        text_about_content4: defaultText['text_about_content4'],
-        text_about_content5: defaultText['text_about_content5'],
-        text_about_content6: defaultText['text_about_content6']
+        text: defaultText
       });
     }
   }
@@ -598,8 +418,8 @@ class NotesList extends React.Component {
     }
     newNote = {
       type: 'note',
-      title: this.state.text_example_title + newCursor,
-      content: this.state.text_example_content,
+      title: this.state.text['text_example_title'] + newCursor,
+      content: this.state.text['text_example_content'],
       visible: 1
     };
     tmpnotes.push(newNote);
@@ -874,7 +694,7 @@ class NotesList extends React.Component {
         || newnotes[i].content === undefined
         || newnotes[i].visible === undefined) {
         missingFields = true;
-        alert(this.state.text_error_fileformat);
+        alert(this.state.text['text_error_fileformat']);
         break;
       }
     }
@@ -896,7 +716,7 @@ class NotesList extends React.Component {
     let file = e.target.files[0];
     if (!file) {
       if (e.target.files.length > 0) {
-        alert(this.state.text_error_loadfile);
+        alert(this.state.text['text_error_loadfile']);
       }
       return;
     }
@@ -945,47 +765,47 @@ class NotesList extends React.Component {
             moveforwardNote={this.moveforwardNote}
             moveupwardNote={this.moveupwardNote}
             movedownwardNote={this.movedownwardNote}
-            text_open={this.state.text_open}
-            text_add={this.state.text_add}
-            text_edit={this.state.text_edit}
-            text_move_backward={this.state.text_move_backward}
-            text_move_forward={this.state.text_move_forward}
-            text_move_upward={this.state.text_move_upward}
-            text_move_downward={this.state.text_move_downward}
+            text={this.state.text['text_open']}
+            text_add={this.state.text['text_add']}
+            text_edit={this.state.text['text_edit']}
+            text_move_backward={this.state.text['text_move_backward']}
+            text_move_forward={this.state.text['text_move_forward']}
+            text_move_upward={this.state.text['text_move_upward']}
+            text_move_downward={this.state.text['text_move_downward']}
           />);
       }
     }
     return (
-			<AppWithTopBar refprop={this.notesListRef} lang={this.state.language} appname={this.state.text_appname}
-			  icons={[{label: this.state.text_add_label, icon: 'add', callback: () => this.addNote()},
-								{label: this.state.text_settings_label, icon: 'settings', callback: () => open_dialog(this.notesListRef, 'settings')},
-								{label: this.state.text_importexport_label, icon: 'import_export', callback: () => open_dialog(this.notesListRef, 'impexp')},
-								{label: this.state.text_help_label, icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
-								{label: this.state.text_about_label, icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
+			<AppWithTopBar refprop={this.notesListRef} lang={this.state.language} appname={this.state.text['text_appname']}
+			  icons={[{label: this.state.text['text_add_label'], icon: 'add', callback: () => this.addNote()},
+								{label: this.state.text['text_settings_label'], icon: 'settings', callback: () => open_dialog(this.notesListRef, 'settings')},
+								{label: this.state.text['text_importexport_label'], icon: 'import_export', callback: () => open_dialog(this.notesListRef, 'impexp')},
+								{label: this.state.text['text_help_label'], icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
+								{label: this.state.text['text_about_label'], icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
           <section className="notesSection">
             {notesRepresentation}
           </section>
-          <Snackbar id="mustBeNum">{this.state.text_snack_mustbenum}</Snackbar>
-          <Snackbar id="tooBig">{this.state.text_snack_toobig}</Snackbar>
-          <Snackbar id="tooSmall">{this.state.text_snack_toosmall}</Snackbar>
-          <Dialog id="opennote" title={this.state.tmptitle} text_close_button={this.state.text_close_button} >
+          <Snackbar id="mustBeNum">{this.state.text['text_snack_mustbenum']}</Snackbar>
+          <Snackbar id="tooBig">{this.state.text['text_snack_toobig']}</Snackbar>
+          <Snackbar id="tooSmall">{this.state.text['text_snack_toosmall']}</Snackbar>
+          <Dialog id="opennote" title={this.state.tmptitle} text_close_button={this.state.text['text_close_button']} >
             <pre>{this.state.tmpcontent}</pre>
           </Dialog>
-          <Dialog id="editnote" title={this.state.text_edit_title}
-                  actions={(<span><input type="submit" value={this.state.text_delete} onClick={event => this.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text_back} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text_save} onClick={event => this.handleSubmit(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
-            <label>{this.state.text_edit_type}
+          <Dialog id="editnote" title={this.state.text['text_edit_title']}
+                  actions={(<span><input type="submit" value={this.state.text['text_delete']} onClick={event => this.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+                  <input type="submit" value={this.state.text['text_back']} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+                  <input type="submit" value={this.state.text['text_save']} onClick={event => this.handleSubmit(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
+            <label>{this.state.text['text_edit_type']}
               <input type="radio" id="abktypenote" name="tmptype" value="note" checked={this.state.tmptype === 'note'} onChange={this.handleInputChange}>
-              </input>{this.state.text_edit_note}
+              </input>{this.state.text['text_edit_note']}
               <input type="radio" id="abktypefolder" name="tmptype" value="folder" checked={this.state.tmptype === 'folder'} onChange={this.handleInputChange}>
-              </input>{this.state.text_edit_folder}
+              </input>{this.state.text['text_edit_folder']}
             </label><br />
-            <label>{this.state.text_edit_note_title}
+            <label>{this.state.text['text_edit_note_title']}
               <input type="text" id="abktitle" name="tmptitle" value={this.state.tmptitle} onChange={this.handleInputChange}></input>
             </label><br />
             {this.state.tmptype === 'note' &&
-              <label>{this.state.text_edit_content}<br />
+              <label>{this.state.text['text_edit_content']}<br />
                 <textarea type="text"
                   id="abkcontent"
                   name="tmpcontent"
@@ -996,60 +816,60 @@ class NotesList extends React.Component {
               </label>
             }
           </Dialog>
-          <Dialog id="settings" title={this.state.text_settings_title} text_close_button={this.state.text_close_button} >
-            <p>{this.state.text_settings_content1}</p>
-            <label>{this.state.text_settings_showedit}
+          <Dialog id="settings" title={this.state.text['text_settings_title']} text_close_button={this.state.text['text_close_button']} >
+            <p>{this.state.text['text_settings_content1']}</p>
+            <label>{this.state.text['text_settings_showedit']}
               <input type="radio" id="showedityes" name="showedit" value="yes" checked={this.state.showedit === 'yes'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_yes}
+              </input>{this.state.text['text_yes']}
               <input type="radio" id="showeditno" name="showedit" value="no" checked={this.state.showedit === 'no'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_no}
+              </input>{this.state.text['text_no']}
             </label><br />
-            <label>{this.state.text_settings_showmove}
+            <label>{this.state.text['text_settings_showmove']}
               <input type="radio" id="showmoveyes" name="showmove" value="yes" checked={this.state.showmove === 'yes'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_yes}
+              </input>{this.state.text['text_yes']}
               <input type="radio" id="showmoveno" name="showmove" value="no" checked={this.state.showmove === 'no'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_no}
+              </input>{this.state.text['text_no']}
             </label><br />
-            <label>{this.state.text_settings_showadd}
+            <label>{this.state.text['text_settings_showadd']}
               <input type="radio" id="showaddyes" name="showadd" value="yes" checked={this.state.showadd === 'yes'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_yes}
+              </input>{this.state.text['text_yes']}
               <input type="radio" id="showaddno" name="showadd" value="no" checked={this.state.showadd === 'no'} onChange={this.handleSettingsChange}>
-              </input>{this.state.text_no}
+              </input>{this.state.text['text_no']}
             </label><br />
-            <label>{this.state.text_settings_rows}
+            <label>{this.state.text['text_settings_rows']}
               <input type="text" id="textarearows" name="textarearows" value={this.state.textarearows} onChange={this.handleSettingsChange}></input>
             </label><br />
-            <label>{this.state.text_settings_columns}
+            <label>{this.state.text['text_settings_columns']}
               <input type="text" id="textareacols" name="textareacols" value={this.state.textareacols} onChange={this.handleSettingsChange}></input>
             </label><br />
-            <LanguageSelector text_language={this.state.text_language} language={this.state.language} handleSettingsChange={this.handleSettingsChange} />
+            <LanguageSelector text_language={this.state.text['text_language']} language={this.state.language} handleSettingsChange={this.handleSettingsChange} />
           </Dialog>
-          <Dialog id="impexp" title={this.state.text_importexport_title}
+          <Dialog id="impexp" title={this.state.text['text_importexport_title']}
                   actions={(<span>
-                    <label>{this.state.text_import}
+                    <label>{this.state.text['text_import']}
                     &nbsp;
                     <input type="file" onChange={e => this.importNotes(e)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></label>
-                    <input type="submit" value={this.state.text_back} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                    <input type="submit" value={this.state.text_export} onClick={event => this.exportNotes()} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)} >
-            <p>{this.state.text_importexport_content}</p>
+                    <input type="submit" value={this.state.text['text_back']} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+                    <input type="submit" value={this.state.text['text_export']} onClick={event => this.exportNotes()} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)} >
+            <p>{this.state.text['text_importexport_content']}</p>
           </Dialog>
-          <Dialog id="help" title={this.state.text_help_title} text_close_button={this.state.text_close_button} >
-            <p>{this.state.text_help_content1}</p>
-            <p>{this.state.text_help_content2}</p>
-            <p>{this.state.text_help_content3}</p>
-            <p>{this.state.text_help_content4}</p>
-            <p>{this.state.text_help_content5}</p>
-            <p>{this.state.text_help_content6}</p>
-            <p>{this.state.text_help_content7}</p>
-            <p>{this.state.text_help_content8}</p>
+          <Dialog id="help" title={this.state.text['text_help_title']} text_close_button={this.state.text['text_close_button']} >
+            <p>{this.state.text['text_help_content1']}</p>
+            <p>{this.state.text['text_help_content2']}</p>
+            <p>{this.state.text['text_help_content3']}</p>
+            <p>{this.state.text['text_help_content4']}</p>
+            <p>{this.state.text['text_help_content5']}</p>
+            <p>{this.state.text['text_help_content6']}</p>
+            <p>{this.state.text['text_help_content7']}</p>
+            <p>{this.state.text['text_help_content8']}</p>
           </Dialog>
-          <Dialog id="about" title={this.state.text_about_title} text_close_button={this.state.text_close_button} >
-            <p>{this.state.text_about_content1}
-                <br />{this.state.text_about_content2}</p>
-            <p>{this.state.text_about_content3}</p>
-            <p>{this.state.text_about_content4}</p>
-            <p>{this.state.text_about_content5}</p>
-            <p>{this.state.text_about_content6}</p>
+          <Dialog id="about" title={this.state.text['text_about_title']} text_close_button={this.state.text['text_close_button']} >
+            <p>{this.state.text['text_about_content1']}
+                <br />{this.state.text['text_about_content2']}</p>
+            <p>{this.state.text['text_about_content3']}</p>
+            <p>{this.state.text['text_about_content4']}</p>
+            <p>{this.state.text['text_about_content5']}</p>
+            <p>{this.state.text['text_about_content6']}</p>
           </Dialog>
         </AppWithTopBar>
     );
