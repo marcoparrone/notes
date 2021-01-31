@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import "@material/card/dist/mdc.card.css";
+import '@material/react-material-icon/dist/material-icon.css';
 
 import I18n from '@marcoparrone/i18n';
 
@@ -15,7 +16,7 @@ import {Dialog, open_dialog} from '@marcoparrone/dialog';
 
 import AppWithTopBar from '@marcoparrone/appwithtopbar';
 
-import {Snackbar, open_snackbar} from './snackbar';
+import {Snackbar, open_snackbar} from '@marcoparrone/snackbar';
 
 const defaultText = require ('./en.json');
 
