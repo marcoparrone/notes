@@ -6,10 +6,6 @@ import '@material/react-material-icon/dist/material-icon.css';
 
 import I18n from '@marcoparrone/i18n';
 
-import saveAs from 'file-saver';
-
-import get_timestamp from './timestamp';
-
 import LanguageSelector from '@marcoparrone/react-language-selector';
 
 import {Dialog, open_dialog} from '@marcoparrone/dialog';
@@ -19,6 +15,12 @@ import AppWithTopBar from '@marcoparrone/appwithtopbar';
 import {Snackbar, open_snackbar} from '@marcoparrone/snackbar';
 
 import IconButton from './iconbutton';
+
+import {
+  add_node, get_node, change_node_field, delete_node, swap_nodes_values,
+  move_node_backward, move_node_forward, move_node_upward, move_node_downward,
+  load_nodes, save_nodes, export_nodes
+} from './nodes';
 
 const defaultText = require ('./en.json');
 
@@ -30,7 +32,7 @@ class Note extends React.Component {
     let keyprefix = "Note" + this.props.id;
     if (this.props.type === 'note') {
       content.push(<label key={keyprefix}>{this.props.title}&nbsp;
-        <IconButton key={keyprefix + "-OpenButton"} label={this.props.text_open} icon='open_in_new' callback={event => this.props.openNote(this.props.id)} />;
+        <IconButton key={keyprefix + "-OpenButton"} label={this.props.text_open} icon='open_in_new' callback={event => this.props.openNote(this.props.id)} />
       </label>);
     } else {
       content.push(<label key={keyprefix + "Label"}>{this.props.title}: </label>);
@@ -205,40 +207,18 @@ class NotesList extends React.Component {
   }
 
   saveNotes() {
-    let newNotes = [];
-
-    // I don't want for the visible value to grow indefinitely.
-    for (let i = 0; i < this.notes.length; i++) {
-      if (this.notes[i].visible > 100) {
-        this.notes[i].visible -= 100;
-      }
-    }
-
-    // Save in current state.
-    this.saveState();
-
-    // Save in local storage, skipping deleted notes.
-    for (let i = 0; i < this.notes.length; i++) {
-      if (this.notes[i].visible !== 0) {
-        newNotes.push(this.notes[i]);
-      }
-    }
-    localStorage.setItem('notes', JSON.stringify(newNotes));
+    save_nodes(this.notes, 'notes');
+    this.setState({notes: this.notes});
   }
 
   handleSubmit(cursor) {
-    let newCursor = cursor.toString().split(".");
-    let note = null;
-    if (newCursor.length > 0) {
-      note = this.notes[newCursor[0]];
+    let note = get_node(this.notes, cursor);
+    if (note) {
+      note.title = this.state.tmptitle;
+      note.type = this.state.tmptype;
+      note.content = this.state.tmpcontent;
+      this.saveNotes();
     }
-    for (let i = 1; i < newCursor.length; i++) {
-      note = note.children[newCursor[i]];
-    }
-    note.title = this.state.tmptitle;
-    note.type = this.state.tmptype;
-    note.content = this.state.tmpcontent;
-    this.saveNotes();
   }
 
   handleInputChange(e) {
@@ -322,304 +302,82 @@ class NotesList extends React.Component {
   }
 
   loadNotes() {
-    let notes = localStorage.getItem('notes');
+    let notes = load_nodes('notes');
     if (notes) {
-      this.notes = JSON.parse(notes);
+      this.notes = notes;
       this.saveState();
     }
   }
 
   addNote(cursor) {
-    let oldCursor = [];
-    let newCursor = [];
-    let note = null;
-    let tmpnotes = [];
-    let newNote = null;
-    if (cursor === undefined || cursor === null) {
-      newCursor = this.notes.length.toString();
-      tmpnotes = this.notes;
-    } else {
-      oldCursor = cursor.toString().split(".");
-      if (oldCursor.length > 0) {
-        tmpnotes = this.notes;
-        note = tmpnotes[oldCursor[0]];
-        newCursor.push(oldCursor[0]);
-      }
-      for (let i = 1; i < oldCursor.length; i++) {
-        tmpnotes = note.children;
-        note = tmpnotes[oldCursor[i]];
-        newCursor.push(oldCursor[i]);
-      }
-      if (note.children === undefined || note.children === null) {
-        note.children = [];
-      }
-      tmpnotes = note.children;
-      newCursor.push((note.children.length).toString());
-      newCursor = newCursor.concat().join('.');
-    }
-    newNote = {
+    let newnote = {
       type: 'note',
-      title: this.state.text['text_example_title'] + newCursor,
+      title: '',
       content: this.state.text['text_example_content'],
       visible: 1
     };
-    tmpnotes.push(newNote);
+    let newCursor = add_node(this.notes, cursor, newnote);
+    change_node_field(this.notes, newCursor, 'title', this.state.text['text_example_title'] + ' ' + newCursor);
     this.saveNotes();
     this.editNote(newCursor);
   }
 
   openNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    if (oldCursor.length > 0) {
-      note = this.notes[oldCursor[0]];
+    let note = get_node(this.notes, cursor);
+    if (note) {
+      this.cursor = cursor;
+      this.tmptype = note.type;
+      this.tmptitle = note.title;
+      this.tmpcontent = note.content;
+      this.saveState();
+      open_dialog(this.notesListRef, 'opennote');
     }
-    for (let i = 1; i < oldCursor.length; i++) {
-      note = note.children[oldCursor[i]];
-    }
-    this.cursor = cursor;
-    this.tmptype = note.type;
-    this.tmptitle = note.title;
-    this.tmpcontent = note.content;
-    this.saveState();
-    open_dialog(this.notesListRef, 'opennote');
   }
 
   editNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    if (oldCursor.length > 0) {
-      note = this.notes[oldCursor[0]];
+    let note = get_node(this.notes, cursor);
+    if (note) {
+      this.cursor = cursor;
+      this.tmptype = note.type;
+      this.tmptitle = note.title;
+      this.tmpcontent = note.content;
+      this.saveState();
+      open_dialog(this.notesListRef, 'editnote');
     }
-    for (let i = 1; i < oldCursor.length; i++) {
-      note = note.children[oldCursor[i]];
-    }
-    this.cursor = cursor;
-    this.tmptype = note.type;
-    this.tmptitle = note.title;
-    this.tmpcontent = note.content;
-    this.saveState();
-    open_dialog(this.notesListRef, 'editnote');
   }
 
   swapNotes(a, b) {
-    let tmpnote = {};
-    tmpnote.type = a.type;
-    tmpnote.title = a.title;
-    tmpnote.content = a.content;
-    tmpnote.visible = a.visible;
-    tmpnote.children = a.children;
-    a.type = b.type;
-    a.title = b.title;
-    a.content = b.content;
-    if (b.visible === 0) {
-      a.visible = 0;
-    } else {
-      a.visible = b.visible + 1;
-    }
-    a.children = b.children;
-    b.type = tmpnote.type;
-    b.title = tmpnote.title;
-    b.content = tmpnote.content;
-    if (tmpnote.visible === 0) {
-      b.visible = 0;
-    } else {
-      b.visible = tmpnote.visible + 1;
-    }
-    b.children = tmpnote.children;
+    swap_nodes_values(a, b);
   }
 
   movebackwardNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    let othernote = null;
-    let i = 0;
-    let tmpIntCusor = 0;
-    let tmpParent = {};
-    if (oldCursor.length > 0) {
-      note = this.notes[oldCursor[0]];
-      if (oldCursor.length === 1) {
-        tmpIntCusor = parseInt(oldCursor[0]);
-        for (let otherID = tmpIntCusor - 1; otherID >= 0 && otherID < this.notes.length; otherID--) {
-          if (this.notes[otherID].visible !== 0) {
-            othernote = this.notes[otherID];
-            break;
-          }
-        }
-      } else {
-        for (i = 1; i < oldCursor.length; i++) {
-          tmpParent = note;
-          note = note.children[oldCursor[i]];
-        }
-        i--;
-        tmpIntCusor = parseInt(oldCursor[i]);
-        for (let otherID = tmpIntCusor - 1; otherID >= 0 && otherID < tmpParent.children.length; otherID--) {
-          if (tmpParent.children[otherID].visible !== 0) {
-            othernote = tmpParent.children[otherID];
-            break;
-          }
-        }
-      }
-      if (othernote !== null) {
-        this.swapNotes(note, othernote);
-        this.saveNotes();
-      }
+    if (move_node_backward(this.notes, cursor)) {
+      this.saveNotes();
     }
   }
 
   moveforwardNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    let othernote = null;
-    let i = 0;
-    let tmpIntCusor = 0;
-    let tmpParent = {};
-    if (oldCursor.length > 0) {
-      note = this.notes[oldCursor[0]];
-      if (oldCursor.length === 1) {
-        tmpIntCusor = parseInt(oldCursor[0]);
-        for (let otherID = tmpIntCusor + 1; otherID >= 0 && otherID < this.notes.length; otherID++) {
-          if (this.notes[otherID].visible !== 0) {
-            othernote = this.notes[otherID];
-            break;
-          }
-        }
-      } else {
-        for (i = 1; i < oldCursor.length; i++) {
-          tmpParent = note;
-          note = note.children[oldCursor[i]];
-        }
-        i--;
-        tmpIntCusor = parseInt(oldCursor[i]);
-        for (let otherID = tmpIntCusor + 1; otherID >= 0 && otherID < tmpParent.children.length; otherID++) {
-          if (tmpParent.children[otherID].visible !== 0) {
-            othernote = tmpParent.children[otherID];
-            break;
-          }
-        }
-      }
-      if (othernote !== null) {
-        this.swapNotes(note, othernote);
-        this.saveNotes();
-      }
+    if (move_node_forward(this.notes, cursor)) {
+      this.saveNotes();
     }
   }
 
   moveupwardNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    let othernote = null;
-    let i = 0;
-    let tmpParent = {};
-    let tmpParentParent = {};
-    let newNote = {
-      type: 'note',
-      title: "InvisibleElement",
-      content: "InvisibleContent",
-      visible: 0
-    };
-
-    if (oldCursor.length > 2) {
-      // I find the note, the parent, and the parent's parent.
-      note = this.notes[oldCursor[0]];
-      for (i = 1; i < oldCursor.length; i++) {
-        tmpParentParent = tmpParent;
-        tmpParent = note;
-        note = note.children[oldCursor[i]];
-      }
-
-      // I add a new element to the parent's parent "children" array.
-      tmpParentParent.children.push(newNote);
-
-      // I swap the new element with the selected element.
-      othernote = tmpParentParent.children[tmpParentParent.children.length - 1];
-      if (othernote !== null) {
-        this.swapNotes(note, othernote);
-        this.saveNotes();
-      }
-    } else if (oldCursor.length > 1) {
-      // I find the note, I already know the parent's parent (it's this.notes).
-      note = this.notes[oldCursor[0]];
-      for (i = 1; i < oldCursor.length; i++) {
-        note = note.children[oldCursor[i]];
-      }
-
-      // I add a new element to the parent's parent "children" array.
-      this.notes.push(newNote);
-
-      // I swap the new element with the selected element.
-      othernote = this.notes[this.notes.length - 1];
-      if (othernote !== null) {
-        this.swapNotes(note, othernote);
-        this.saveNotes();
-      }
+    const emptynode = {type: 'note', title: "InvisibleElement", content: "InvisibleContent", visible: 0};
+    if (move_node_upward(this.notes, cursor, emptynode)) {
+      this.saveNotes();
     }
   }
 
   movedownwardNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    let othernote = null;
-    let nextfolder = null;
-    let i = 0;
-    let tmpIntCusor = 0;
-    let tmpParent = {};
-    let newNote = {
-      type: 'note',
-      title: "InvisibleElement",
-      content: "InvisibleContent",
-      visible: 0
-    };
-
-    if (oldCursor.length > 0) {
-      // I find the element and the next folder element.
-      note = this.notes[oldCursor[0]];
-      if (oldCursor.length === 1) {
-        tmpIntCusor = parseInt(oldCursor[0]);
-        for (let otherID = tmpIntCusor + 1; otherID >= 0 && otherID < this.notes.length; otherID++) {
-          if (this.notes[otherID].visible !== 0 && this.notes[otherID].type === 'folder') {
-            nextfolder = this.notes[otherID];
-            break;
-          }
-        }
-      } else {
-        for (i = 1; i < oldCursor.length; i++) {
-          tmpParent = note;
-          note = note.children[oldCursor[i]];
-        }
-        i--;
-        tmpIntCusor = parseInt(oldCursor[i]);
-        for (let otherID = tmpIntCusor + 1; otherID >= 0 && otherID < tmpParent.children.length; otherID++) {
-          if (tmpParent.children[otherID].visible !== 0 && tmpParent.children[otherID].type === 'folder') {
-            nextfolder = tmpParent.children[otherID];
-            break;
-          }
-        }
-      }
-      if (nextfolder !== null) {
-        // I add a new element to the next folder "children" array.
-        if (nextfolder.children === undefined) {
-          nextfolder.children = [];
-        }
-        nextfolder.children.push(newNote);
-
-        // I swap the new element with the selected element.
-        othernote = nextfolder.children[nextfolder.children.length - 1];
-        this.swapNotes(note, othernote);
-        this.saveNotes();
-      }
+    const emptynode = {type: 'note', title: "InvisibleElement", content: "InvisibleContent", visible: 0};
+    if (move_node_downward(this.notes, cursor, emptynode)) {
+      this.saveNotes();
     }
   }
 
   deleteNote(cursor) {
-    let oldCursor = cursor.toString().split(".");
-    let note = null;
-    if (oldCursor.length > 0) {
-      note = this.notes[oldCursor[0]];
-      for (let i = 1; i < oldCursor.length; i++) {
-        note = note.children[oldCursor[i]];
-      }
-      note.visible = 0;
+    if (delete_node(this.notes, cursor)) {
       this.saveNotes();
       this.forceUpdate();
     }
@@ -673,20 +431,8 @@ class NotesList extends React.Component {
   }
 
   exportNotes() {
-    let newnotes = [];
-
-    // Save in current state.
     this.saveState();
-
-    // Export to JSON file, skipping deleted notes.
-    for (let i = 0; i < this.notes.length; i++) {
-      if (this.notes[i].visible !== 0) {
-        newnotes.push(this.notes[i]);
-      }
-    }
-
-    saveAs(new Blob([JSON.stringify(newnotes)], { type: "application/json;charset=utf-8" }),
-      'notes-' + get_timestamp() + '.json');
+    export_nodes(this.notes, 'notes');
   }
 
   render() {
