@@ -86,7 +86,7 @@ function delete_node(nodes, cursor) {
 function swap_nodes_values(a, b) {
   const emptynode = {};
   const akeys = Object.keys(a);
-  const bkeys = Object.keys(a);
+  const bkeys = Object.keys(b);
   let tmpnode = {};
 
   if (a.visible !== 0) {
