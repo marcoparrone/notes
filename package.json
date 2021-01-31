@@ -10,18 +10,14 @@
 			"license": "MIT",
 			"dependencies": {
 						"@marcoparrone/appwithtopbar": "^1.0.0",
-						"@marcoparrone/dialog": "^1.0.0",
-						"@marcoparrone/i18n": "^1.0.2",
-						"@marcoparrone/react-language-selector": "^1.0.3",
-						"@material/card": "^8.0.0",
-						"@material/dialog": "^8.0.0",
+						"@marcoparrone/dialog": "^1.0.1",
+						"@marcoparrone/i18n": "^1.0.3",
+						"@marcoparrone/react-language-selector": "^1.0.4",
+						"@marcoparrone/snackbar": "^1.0.1",
+						"@material/card": "^9.0.0",
 						"@material/react-material-icon": "^0.15.0",
-						"@material/react-top-app-bar": "^0.15.0",
-						"@material/snackbar": "^8.0.0",
-						"@material/theme": "^8.0.0",
-						"@material/top-app-bar": "^8.0.0",
 						"@types/classnames": "^2.2.11",
-						"@types/node": "^14.14.16",
+						"@types/node": "^14.14.22",
 						"@types/react": "^17.0.0",
 						"@types/react-dom": "^17.0.0",
 						"file-saver": "^2.0.5",
@@ -54,15 +50,14 @@
 						]
 			},
 			"devDependencies": {
-						"@marcoparrone/translate-json": "^1.0.4",
+						"@marcoparrone/translate-json": "^1.0.6",
 						"@types/file-saver": "^2.0.1",
 						"clean-webpack-plugin": "^3.0.0",
-						"html-webpack-plugin": "^4.5.0",
+						"html-webpack-plugin": "^4.5.1",
 						"mocha": "^8.2.1",
 						"should": "^13.2.3",
-						"webpack-cli": "^4.3.0",
-						"webpack-dev-server": "^3.11.0",
+						"webpack-cli": "^4.4.0",
 						"webpack-merge": "^5.7.3",
-						"workbox-webpack-plugin": "^6.0.2"
+						"workbox-webpack-plugin": "^6.1.0"
 			}
 }
