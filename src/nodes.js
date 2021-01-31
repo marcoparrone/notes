@@ -1,9 +1,15 @@
 // nodes.js  ---  nodes (of an array of tree structures) implementation.
 //
-// Every nodes has these mandatory fields:
+// Every node has these mandatory fields:
 //
-//  * type: the value is a string, it's 'folder' for a node with child elements, or something other for a final node.
-//  * visible: an integer, if zero then the node is considered as if it was deleted
+//  * type: the value is a string, it's 'folder' for a node with child elements, or something other for a final node;
+//  * visible: an integer, if zero then the node is considered as if it was deleted;
+//
+// eventually the property 'children' contains an array of children nodes.
+//
+// The nodes parameter of the functions is always an array of nodes.
+//
+// The cursor parameter has this format: N1.N2.N3, for example 2.3.5 means the 5th children of the 3rd children of the 2nd element.
 //
 
 import saveAs from 'file-saver';
