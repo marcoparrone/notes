@@ -685,30 +685,36 @@ class NotesList extends React.Component {
   }
 
   importNotesReaderOnload(e) {
-    let newnotes = JSON.parse(e.target.result);
+    let newnotes = {};
     let missingFields = false;
 
-    for (let i = 0; i < newnotes.length; i++) {
-      if (newnotes[i].type === undefined
-        || newnotes[i].title === undefined
-        || newnotes[i].content === undefined
-        || newnotes[i].visible === undefined) {
-        missingFields = true;
-        alert(this.state.text['text_error_fileformat']);
-        break;
+    try {
+      newnotes = JSON.parse(e.target.result);
+    } catch {
+      alert(this.state.text['text_error_fileformat']);
+    } finally {
+      for (let i = 0; i < newnotes.length; i++) {
+        if (newnotes[i].type === undefined
+          || newnotes[i].title === undefined
+          || newnotes[i].content === undefined
+          || newnotes[i].visible === undefined) {
+          missingFields = true;
+          alert(this.state.text['text_error_fileformat']);
+          break;
+        }
       }
-    }
-
-    if (missingFields === false && newnotes.length > 0) {
-      // Delete old notes.
-      for (let i = 0; i < this.notes.length; i++) {
-        this.deleteNote(i);
+  
+      if (missingFields === false && newnotes.length > 0) {
+        // Delete old notes.
+        for (let i = 0; i < this.notes.length; i++) {
+          this.deleteNote(i);
+        }
+        // Replace old notes with new notes
+        this.notes = newnotes;
+        // Save and display.
+        this.saveNotes();
+        this.forceUpdate();
       }
-      // Replace old notes with new notes
-      this.notes = newnotes;
-      // Save and display.
-      this.saveNotes();
-      this.forceUpdate();
     }
   }
 
