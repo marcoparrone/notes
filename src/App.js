@@ -17,7 +17,7 @@ import {Snackbar, open_snackbar} from '@marcoparrone/snackbar';
 import IconButton from './iconbutton';
 
 import {
-  add_node, get_node, change_node_field, delete_node, swap_nodes_values,
+  add_node, get_node, change_node_field, delete_node,
   move_node_backward, move_node_forward, move_node_upward, move_node_downward,
   load_nodes, save_nodes, export_nodes, import_nodes
 } from './nodes';
@@ -378,7 +378,7 @@ class NotesList extends React.Component {
   }
 
   importNotes(evt) {
-    import_nodes(this.notes, evt, this.state.text['text_error_loadfile'], this.state.text['text_error_fileformat'], () => {
+    import_nodes(this.notes, evt, ['type', 'title', 'content', 'visible'], this.state.text['text_error_loadfile'], this.state.text['text_error_fileformat'], () => {
       // Save and display.
       this.saveNotes();
       this.forceUpdate();

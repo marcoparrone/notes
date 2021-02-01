@@ -21,20 +21,22 @@ import get_timestamp from './timestamp';
 //
 // If basefieldsincluded is true, then the type and visible fields will not be added to the list of fields to check.
 //
-function all_nodes_have_all_fields_p (nodes, fields) {
-  for (let n = 0; n < nodes.length; n++) {
-    for (let f = 0; f < fields.length; f++) {
-      if (nodes[n][f] === undefined) {
-        return false;
+function all_nodes_have_all_fields_p(nodes, fields) {
+  if (nodes) {
+    for (let n = 0; n < nodes.length; n++) {
+      for (let f = 0; f < fields.length; f++) {
+        if (nodes[n][fields[f]] === undefined) {
+          return false;
+        }
       }
-    }
-    try {
-      if (! all_nodes_have_all_fields_p(nodes[n].children, fields)) {
-        return false;
-      } 
-    } catch (err) {
-      console.log('all_nodes_have_all_fields_p: warning: stack size exceeded: exceeding nodes will be considered ok.');
-      continue;
+      try {
+        if (!all_nodes_have_all_fields_p(nodes[n].children, fields)) {
+          return false;
+        }
+      } catch (err) {
+        console.log('all_nodes_have_all_fields_p: exceeding nodes will be considered ok because of error: ' + err);
+        continue;
+      }
     }
   }
   return true;
@@ -378,7 +380,11 @@ function export_nodes(nodes, name) {
     name + '-' + get_timestamp() + '.json');
 }
 
-// Import new nodes from evt.target.files[0], overwriting old nodes on success.
+// Import new nodes from evt.target.files[0] JSON file, overwriting old nodes on success.
+//
+// fields_to_check is an array of strings containing the keys of the mandatory fields
+// that must be found in every node, if they are not found in all the nodes, then the
+// nodes will not be imported.
 //
 // text_error_loadfile is the error string to display when there is an error loading the file,
 // for example: "error: cannot load file."
@@ -388,7 +394,7 @@ function export_nodes(nodes, name) {
 //
 // call_on_success is a callback function to call when the nodes are imported successfully.
 //
-function import_nodes(nodes, evt, text_error_loadfile, text_error_fileformat, call_on_success) {
+function import_nodes(nodes, evt, fields_to_check, text_error_loadfile, text_error_fileformat, call_on_success) {
   let file = evt.target.files[0];
   if (!file) {
     if (evt.target.files.length > 0) {
@@ -405,15 +411,9 @@ function import_nodes(nodes, evt, text_error_loadfile, text_error_fileformat, ca
     } catch {
       alert(text_error_fileformat);
     } finally {
-      for (let i = 0; i < newnodes.length; i++) {
-        if (newnodes[i].type === undefined
-          || newnodes[i].title === undefined
-          || newnodes[i].content === undefined
-          || newnodes[i].visible === undefined) {
-          missingFields = true;
-          alert(text_error_fileformat);
-          break;
-        }
+      if (! all_nodes_have_all_fields_p (newnodes, fields_to_check)) {
+        missingFields = true;
+        alert(text_error_fileformat);
       }
       if (missingFields === false && newnodes.length > 0) {
         // Delete extra entries in the old nodes.
