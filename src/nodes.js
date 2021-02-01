@@ -2,19 +2,43 @@
 //
 // Every node has these mandatory fields:
 //
-//  * type: the value is a string, it's 'folder' for a node with child elements, or something other for a final node;
+//  * type: the value is a string, it's 'folder' for a node with children elements, or something other for a final node;
 //  * visible: an integer, if zero then the node is considered as if it was deleted;
 //
 // eventually the property 'children' contains an array of children nodes.
 //
-// The nodes parameter of the functions is always an array of nodes.
+// The "nodes" parameter is always an array of nodes.
 //
-// The cursor parameter has this format: N1.N2.N3, for example 2.3.5 means the 5th children of the 3rd children of the 2nd element.
+// The "cursor" parameter is a string and has this format: N1.N2.N3, for example 2.3.5 means the 5th children of the 3rd children of the 2nd element.
 //
 
 import saveAs from 'file-saver';
 
 import get_timestamp from './timestamp';
+
+// Return true if all the nodes have all the fields in the extrafields array of strings,
+// plus the type and visible fields which are mandatory when using this library.
+//
+// If basefieldsincluded is true, then the type and visible fields will not be added to the list of fields to check.
+//
+function all_nodes_have_all_fields_p (nodes, fields) {
+  for (let n = 0; n < nodes.length; n++) {
+    for (let f = 0; f < fields.length; f++) {
+      if (nodes[n][f] === undefined) {
+        return false;
+      }
+    }
+    try {
+      if (! all_nodes_have_all_fields_p(nodes[n].children, fields)) {
+        return false;
+      } 
+    } catch (err) {
+      console.log('all_nodes_have_all_fields_p: warning: stack size exceeded: exceeding nodes will be considered ok.');
+      continue;
+    }
+  }
+  return true;
+}
 
 // Add node to nodes, return the cursor of the new node.
 //
@@ -27,7 +51,7 @@ function add_node(nodes, cursor, newnode) {
     newCursor = nodes.length.toString();
     tmpnodes = nodes;
   } else {
-    oldCursor = cursor.toString().split(".");
+    oldCursor = cursor.split(".");
     if (oldCursor.length > 0) {
       tmpnodes = nodes;
       node = tmpnodes[oldCursor[0]];
@@ -55,7 +79,7 @@ function get_node(nodes, cursor) {
   let oldCursor = [];
   let node = null;
   if (nodes && cursor) {
-    oldCursor = cursor.toString().split(".");
+    oldCursor = cursor.split(".");
     if (oldCursor.length > 0) {
       node = nodes[oldCursor[0]];
     }
@@ -123,7 +147,7 @@ function swap_nodes_values(a, b) {
 // Return true on success, false on failure.
 //
 function move_node_backward(nodes, cursor) {
-  let oldCursor = cursor.toString().split(".");
+  let oldCursor = cursor.split(".");
   let node = null;
   let othernode = null;
   let i = 0;
@@ -166,7 +190,7 @@ function move_node_backward(nodes, cursor) {
 // Return true on success, false on failure.
 //
 function move_node_forward(nodes, cursor) {
-  let oldCursor = cursor.toString().split(".");
+  let oldCursor = cursor.split(".");
   let node = null;
   let othernode = null;
   let i = 0;
@@ -209,7 +233,7 @@ function move_node_forward(nodes, cursor) {
 // Return true on success, false on failure.
 //
 function move_node_upward(nodes, cursor, emptynode) {
-  let oldCursor = cursor.toString().split(".");
+  let oldCursor = cursor.split(".");
   let node = null;
   let othernode = null;
   let i = 0;
@@ -259,7 +283,7 @@ function move_node_upward(nodes, cursor, emptynode) {
 // Return true on success, false on failure.
 //
 function move_node_downward(nodes, cursor, emptynode) {
-  let oldCursor = cursor.toString().split(".");
+  let oldCursor = cursor.split(".");
   let node = null;
   let othernode = null;
   let nextfolder = null;
@@ -354,8 +378,63 @@ function export_nodes(nodes, name) {
     name + '-' + get_timestamp() + '.json');
 }
 
+// Import new nodes from evt.target.files[0], overwriting old nodes on success.
+//
+// text_error_loadfile is the error string to display when there is an error loading the file,
+// for example: "error: cannot load file."
+//
+// text_error_fileformat is the error string to display when the format of the file is wrong,
+// for example: "error: file format is wrong."
+//
+// call_on_success is a callback function to call when the nodes are imported successfully.
+//
+function import_nodes(nodes, evt, text_error_loadfile, text_error_fileformat, call_on_success) {
+  let file = evt.target.files[0];
+  if (!file) {
+    if (evt.target.files.length > 0) {
+      alert(text_error_loadfile);
+    }
+    return;
+  }
+  let reader = new FileReader();
+  reader.onload = (evt) => {
+    let newnodes = {};
+    let missingFields = false;
+    try {
+      newnodes = JSON.parse(evt.target.result);
+    } catch {
+      alert(text_error_fileformat);
+    } finally {
+      for (let i = 0; i < newnodes.length; i++) {
+        if (newnodes[i].type === undefined
+          || newnodes[i].title === undefined
+          || newnodes[i].content === undefined
+          || newnodes[i].visible === undefined) {
+          missingFields = true;
+          alert(text_error_fileformat);
+          break;
+        }
+      }
+      if (missingFields === false && newnodes.length > 0) {
+        // Delete extra entries in the old nodes.
+        nodes.splice(newnodes.length -1);
+        // Overwrite old nodes with new nodes.
+        for (let i = 0; i < newnodes.length; i++) {
+          nodes[i] = newnodes[i];
+        }
+        // Call the callback function.
+        if (call_on_success) {
+          call_on_success();
+        }
+      }
+    }
+  };
+  reader.readAsText(file);
+}
+
 export {
+  all_nodes_have_all_fields_p,
   add_node, get_node, change_node_field, delete_node, swap_nodes_values,
   move_node_backward, move_node_forward, move_node_upward, move_node_downward,
-  load_nodes, save_nodes, export_nodes
+  load_nodes, save_nodes, export_nodes, import_nodes
 };
