@@ -122,7 +122,6 @@ class NotesList extends React.Component {
     this.addNote = this.addNote.bind(this);
     this.openNote = this.openNote.bind(this);
     this.editNote = this.editNote.bind(this);
-    this.swapNotes = this.swapNotes.bind(this);
     this.movebackwardNote = this.movebackwardNote.bind(this);
     this.moveforwardNote = this.moveforwardNote.bind(this);
     this.moveupwardNote = this.moveupwardNote.bind(this);
@@ -343,10 +342,6 @@ class NotesList extends React.Component {
       this.saveState();
       open_dialog(this.notesListRef, 'editnote');
     }
-  }
-
-  swapNotes(a, b) {
-    swap_nodes_values(a, b);
   }
 
   movebackwardNote(cursor) {
