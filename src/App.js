@@ -19,7 +19,7 @@ import IconButton from './iconbutton';
 import {
   add_node, get_node, change_node_field, delete_node, swap_nodes_values,
   move_node_backward, move_node_forward, move_node_upward, move_node_downward,
-  load_nodes, save_nodes, export_nodes
+  load_nodes, save_nodes, export_nodes, import_nodes
 } from './nodes';
 
 const defaultText = require ('./en.json');
@@ -92,7 +92,7 @@ class NotesList extends React.Component {
   constructor(props) {
     super(props);
     this.notes = [];
-    this.cursor = -1;
+    this.cursor = "";
     this.tmptype = 'note';
     this.tmptitle = '';
     this.tmpcontent = '';
@@ -130,7 +130,6 @@ class NotesList extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSettingsChange = this.handleSettingsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.importNotesReaderOnload = this.importNotesReaderOnload.bind(this);
     this.importNotes = this.importNotes.bind(this);
     this.exportNotes = this.exportNotes.bind(this);
     this.saveState = this.saveState.bind(this);
@@ -383,51 +382,12 @@ class NotesList extends React.Component {
     }
   }
 
-  importNotesReaderOnload(e) {
-    let newnotes = {};
-    let missingFields = false;
-
-    try {
-      newnotes = JSON.parse(e.target.result);
-    } catch {
-      alert(this.state.text['text_error_fileformat']);
-    } finally {
-      for (let i = 0; i < newnotes.length; i++) {
-        if (newnotes[i].type === undefined
-          || newnotes[i].title === undefined
-          || newnotes[i].content === undefined
-          || newnotes[i].visible === undefined) {
-          missingFields = true;
-          alert(this.state.text['text_error_fileformat']);
-          break;
-        }
-      }
-  
-      if (missingFields === false && newnotes.length > 0) {
-        // Delete old notes.
-        for (let i = 0; i < this.notes.length; i++) {
-          this.deleteNote(i);
-        }
-        // Replace old notes with new notes
-        this.notes = newnotes;
-        // Save and display.
-        this.saveNotes();
-        this.forceUpdate();
-      }
-    }
-  }
-
-  importNotes(e) {
-    let file = e.target.files[0];
-    if (!file) {
-      if (e.target.files.length > 0) {
-        alert(this.state.text['text_error_loadfile']);
-      }
-      return;
-    }
-    let reader = new FileReader();
-    reader.onload = this.importNotesReaderOnload;
-    reader.readAsText(file);
+  importNotes(evt) {
+    import_nodes(this.notes, evt, this.state.text['text_error_loadfile'], this.state.text['text_error_fileformat'], () => {
+      // Save and display.
+      this.saveNotes();
+      this.forceUpdate();
+    });
   }
 
   exportNotes() {
