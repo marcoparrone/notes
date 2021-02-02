@@ -121,14 +121,6 @@ function swap_nodes_values(a, b) {
   const bkeys = Object.keys(b);
   let tmpnode = {};
 
-  if (a.visible !== 0) {
-    a.visible++;
-  }
-
-  if (b.visible !== 0) {
-    b.visible++;
-  }
-
   akeys.forEach((key, index) => {
     tmpnode[key] = a[key];
     a[key] = emptynode[key];
@@ -347,13 +339,6 @@ function load_nodes(item) {
 //
 function save_nodes(nodes, item) {
   let newnodes = [];
-
-  // I don't want for the visible value to grow indefinitely.
-  for (let i = 0; i < nodes.length; i++) {
-    if (nodes[i].visible > 100) {
-      nodes[i].visible -= 100;
-    }
-  }
 
   // Save in local storage, skipping deleted nodes.
   for (let i = 0; i < nodes.length; i++) {
