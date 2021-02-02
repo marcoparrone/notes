@@ -12,6 +12,7 @@
 						"@marcoparrone/appwithtopbar": "^1.0.0",
 						"@marcoparrone/dialog": "^1.0.2",
 						"@marcoparrone/i18n": "^1.0.3",
+						"@marcoparrone/nodes": "^1.0.0",
 						"@marcoparrone/react-language-selector": "^1.0.4",
 						"@marcoparrone/snackbar": "^1.0.1",
 						"@material/card": "^9.0.0",

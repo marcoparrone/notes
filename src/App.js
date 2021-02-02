@@ -20,7 +20,7 @@ import {
   add_node, get_node, change_node_field, delete_node,
   move_node_backward, move_node_forward, move_node_upward, move_node_downward,
   load_nodes, save_nodes, export_nodes, import_nodes
-} from './nodes';
+} from '@marcoparrone/nodes';
 
 const defaultText = require ('./en.json');
 
