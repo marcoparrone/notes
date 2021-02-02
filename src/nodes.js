@@ -16,10 +16,7 @@ import saveAs from 'file-saver';
 
 import get_timestamp from './timestamp';
 
-// Return true if all the nodes have all the fields in the extrafields array of strings,
-// plus the type and visible fields which are mandatory when using this library.
-//
-// If basefieldsincluded is true, then the type and visible fields will not be added to the list of fields to check.
+// Return true if all the nodes have all the fields in the "fields" array of strings.
 //
 function all_nodes_have_all_fields_p(nodes, fields) {
   if (nodes) {
