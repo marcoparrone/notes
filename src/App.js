@@ -9,17 +9,13 @@ import AppWithTopBar from '@marcoparrone/appwithtopbar';
 
 import {Snackbar, open_snackbar} from '@marcoparrone/snackbar';
 
-import {
-  add_node, get_node, change_node_field, delete_node,
-  move_node_backward, move_node_forward, move_node_upward, move_node_downward,
-  load_nodes, save_nodes, export_nodes, import_nodes
-} from '@marcoparrone/nodes';
+import { add_node, get_node, change_node_field, delete_node, load_nodes, export_nodes, import_nodes } from '@marcoparrone/nodes';
 
 import EditDialog from './edit-dialog';
 import OpenDialog from './open-dialog';
 import SettingsDialog from './settings-dialog';
 
-import Node from './react-node';
+import NodesArray from './react-node';
 
 const defaultText = require ('./en.json');
 
@@ -36,32 +32,24 @@ class NodesList extends React.Component {
 
     this.i18n = { language: 'en', text: defaultText};
 
-    this.state = { notes: this.notes };
-
-    this.deleteNode = this.deleteNode.bind(this);
-
+    this.saveNodes = this.saveNodes.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSettingsChange = this.handleSettingsChange.bind(this);
+    this.loadNodes = this.loadNodes.bind(this);
     this.addNode = this.addNode.bind(this);
     this.openNode = this.openNode.bind(this);
     this.editNode = this.editNode.bind(this);
     this.openSettings = this.openSettings.bind(this);
-
-    this.movebackwardNode = this.movebackwardNode.bind(this);
-    this.moveforwardNode = this.moveforwardNode.bind(this);
-    this.moveupwardNode = this.moveupwardNode.bind(this);
-    this.movedownwardNode = this.movedownwardNode.bind(this);
-
-    this.handleSettingsChange = this.handleSettingsChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-
+    this.deleteNode = this.deleteNode.bind(this);
     this.importNodes = this.importNodes.bind(this);
     this.exportNodes = this.exportNodes.bind(this);
 
     this.notesListRef = React.createRef();
+    this.NodesArrayRef = React.createRef();
     this.EditDialogRef = React.createRef();
     this.OpenDialogRef = React.createRef();
     this.SettingsDialogRef = React.createRef();
   }
-
 
   componentDidMount() {
     // Load the basic localStorage data.
@@ -94,13 +82,8 @@ class NodesList extends React.Component {
     this.loadNodes();
   }
 
-  componentWillUnmount() {
-
-  }
-
   saveNodes() {
-    save_nodes(this.notes, 'notes');
-    this.setState({notes: this.notes});
+    this.NodesArrayRef.current.saveNodes(this.notes);
   }
 
   handleSubmit(cursor, type, title, content) {
@@ -174,7 +157,7 @@ class NodesList extends React.Component {
     let notes = load_nodes('notes');
     if (notes) {
       this.notes = notes;
-      this.setState({ notes: this.notes });
+      this.NodesArrayRef.current.updateState(this.notes);
     }
   }
 
@@ -212,32 +195,6 @@ class NodesList extends React.Component {
     open_dialog(this.notesListRef, 'settings');
   }
 
-  movebackwardNode(cursor) {
-    if (move_node_backward(this.notes, cursor)) {
-      this.saveNodes();
-    }
-  }
-
-  moveforwardNode(cursor) {
-    if (move_node_forward(this.notes, cursor)) {
-      this.saveNodes();
-    }
-  }
-
-  moveupwardNode(cursor) {
-    const emptynode = {type: 'note', title: "InvisibleElement", content: "InvisibleContent", visible: 0};
-    if (move_node_upward(this.notes, cursor, emptynode)) {
-      this.saveNodes();
-    }
-  }
-
-  movedownwardNode(cursor) {
-    const emptynode = {type: 'note', title: "InvisibleElement", content: "InvisibleContent", visible: 0};
-    if (move_node_downward(this.notes, cursor, emptynode)) {
-      this.saveNodes();
-    }
-  }
-
   deleteNode(cursor) {
     if (delete_node(this.notes, cursor)) {
       this.saveNodes();
@@ -258,32 +215,6 @@ class NodesList extends React.Component {
   }
 
   render() {
-    let notesRepresentation = [];
-    for (let i = 0; i < this.state.notes.length; i++) {
-      if (this.notes[i].visible !== 0) {
-        notesRepresentation.push(
-          <Node
-            id={i.toString()}
-            key={'Note' + i + ' ' + this.state.notes[i].visible}
-            type={this.state.notes[i].type}
-            title={this.state.notes[i].title}
-            content={this.state.notes[i].content}
-            children={this.state.notes[i].children}
-            visible={this.state.notes[i].visible}
-            showedit={this.showedit}
-            showmove={this.showmove}
-            showadd={this.showadd}
-            addNode={this.addNode}
-            openNode={this.openNode}
-            editNode={this.editNode}
-            movebackwardNode={this.movebackwardNode}
-            moveforwardNode={this.moveforwardNode}
-            moveupwardNode={this.moveupwardNode}
-            movedownwardNode={this.movedownwardNode}
-            text={this.i18n.text}
-          />);
-      }
-    }
     return (
 			<AppWithTopBar refprop={this.notesListRef} lang={this.i18n.language} appname={this.i18n.text['text_appname']}
 			  icons={[{label: this.i18n.text['text_add_label'], icon: 'add', callback: () => this.addNode()},
@@ -291,9 +222,9 @@ class NodesList extends React.Component {
 								{label: this.i18n.text['text_importexport_label'], icon: 'import_export', callback: () => open_dialog(this.notesListRef, 'impexp')},
 								{label: this.i18n.text['text_help_label'], icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
 								{label: this.i18n.text['text_about_label'], icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
-          <section className="notesSection">
-            {notesRepresentation}
-          </section>
+          <NodesArray key="NodesArray" ref={this.NodesArrayRef} item="notes" text={this.i18n.text}
+            nodes={this.nodes} showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
+            addNode={this.addNode} openNode={this.openNode} editNode={this.editNode} />
           <Snackbar id="mustBeNum">{this.i18n.text['text_snack_mustbenum']}</Snackbar>
           <Snackbar id="tooBig">{this.i18n.text['text_snack_toobig']}</Snackbar>
           <Snackbar id="tooSmall">{this.i18n.text['text_snack_toosmall']}</Snackbar>
