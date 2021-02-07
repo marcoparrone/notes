@@ -32,7 +32,7 @@ class Note extends React.Component {
     let keyprefix = "Note" + this.props.id;
     if (this.props.type === 'note') {
       content.push(<label key={keyprefix}>{this.props.title}&nbsp;
-        <IconButton key={keyprefix + "-OpenButton"} label={this.props.text_open} icon='open_in_new' callback={event => this.props.openNote(this.props.id)} />
+        <IconButton key={keyprefix + "-OpenButton"} label={this.props.text['text_open']} icon='open_in_new' callback={event => this.props.openNote(this.props.id)} />
       </label>);
     } else {
       content.push(<label key={keyprefix + "Label"}>{this.props.title}: </label>);
@@ -65,17 +65,17 @@ class Note extends React.Component {
         }
       }
       if (this.props.showadd === 'yes') {
-        content.push(<IconButton key={keyprefix + "-AddButton"} label={this.props.text_add} icon='add' callback={event => this.props.addNote(this.props.id)} />);
+        content.push(<IconButton key={keyprefix + "-AddButton"} label={this.props.text['text_add']} icon='add' callback={event => this.props.addNote(this.props.id)} />);
       }
     }
     if (this.props.showedit === 'yes') {
-      content.push(<IconButton key={keyprefix + "-EditButton"} label={this.props.text_edit} icon='edit' callback={event => this.props.editNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-EditButton"} label={this.props.text['text_edit']} icon='edit' callback={event => this.props.editNote(this.props.id)} />);
     }
     if (this.props.showmove === 'yes') {
-      content.push(<IconButton key={keyprefix + "-BackwardButton"} label={this.props.text_move_backward} icon='keyboard_arrow_left' callback={event => this.props.movebackwardNote(this.props.id)} />);
-      content.push(<IconButton key={keyprefix + "-ForwardButton"} label={this.props.text_move_forward} icon='keyboard_arrow_right' callback={event => this.props.moveforwardNote(this.props.id)} />);
-      content.push(<IconButton key={keyprefix + "-UpwardButton"} label={this.props.text_move_upward} icon='keyboard_arrow_up' callback={event => this.props.moveupwardNote(this.props.id)} />);
-      content.push(<IconButton key={keyprefix + "-DownwardButton"} label={this.props.text_move_downward} icon='keyboard_arrow_down' callback={event => this.props.movedownwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-BackwardButton"} label={this.props.text['text_move_backward']} icon='keyboard_arrow_left' callback={event => this.props.movebackwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-ForwardButton"} label={this.props.text['text_move_forward']} icon='keyboard_arrow_right' callback={event => this.props.moveforwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-UpwardButton"} label={this.props.text['text_move_upward']} icon='keyboard_arrow_up' callback={event => this.props.moveupwardNote(this.props.id)} />);
+      content.push(<IconButton key={keyprefix + "-DownwardButton"} label={this.props.text['text_move_downward']} icon='keyboard_arrow_down' callback={event => this.props.movedownwardNote(this.props.id)} />);
     }
     return (
       <div className="mdc-card  mdc-card--outlined" key={keyprefix + "Card"}>
@@ -210,13 +210,10 @@ class NotesList extends React.Component {
   }
 
   handleSubmit(cursor) {
-    let note = get_node(this.notes, cursor);
-    if (note) {
-      note.title = this.state.tmptitle;
-      note.type = this.state.tmptype;
-      note.content = this.state.tmpcontent;
-      this.saveNotes();
-    }
+    change_node_field(this.notes, cursor, 'title', this.state.tmptitle);
+    change_node_field(this.notes, cursor, 'type', this.state.tmptype);
+    change_node_field(this.notes, cursor, 'content', this.state.tmpcontent);
+    this.saveNotes();
   }
 
   handleInputChange(e) {
