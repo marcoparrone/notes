@@ -22,6 +22,9 @@ import {
   load_nodes, save_nodes, export_nodes, import_nodes
 } from '@marcoparrone/nodes';
 
+import EditDialog from './edit-dialog';
+import OpenDialog from './open-dialog';
+
 const defaultText = require ('./en.json');
 
 class Note extends React.Component {
@@ -92,10 +95,6 @@ class NotesList extends React.Component {
   constructor(props) {
     super(props);
     this.notes = [];
-    this.cursor = "";
-    this.tmptype = 'note';
-    this.tmptitle = '';
-    this.tmpcontent = '';
     this.showedit = 'yes';
     this.showmove = 'no';
     this.showadd = 'yes';
@@ -106,10 +105,6 @@ class NotesList extends React.Component {
 
     this.state = {
       notes: this.notes,
-      cursor: this.cursor,
-      tmptype: this.tmptype,
-      tmptitle: this.tmptitle,
-      tmpcontent: this.tmpcontent,
       showedit: this.showedit,
       showmove: this.showmove,
       showadd: this.showadd,
@@ -126,23 +121,20 @@ class NotesList extends React.Component {
     this.moveforwardNote = this.moveforwardNote.bind(this);
     this.moveupwardNote = this.moveupwardNote.bind(this);
     this.movedownwardNote = this.movedownwardNote.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSettingsChange = this.handleSettingsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.importNotes = this.importNotes.bind(this);
     this.exportNotes = this.exportNotes.bind(this);
     this.saveState = this.saveState.bind(this);
     this.notesListRef = React.createRef();
+    this.EditDialogRef = React.createRef();
+    this.OpenDialogRef = React.createRef();
   }
 
   saveState () {
     if (this.i18n.text) {
       this.setState({
         notes: this.notes,
-        cursor: this.cursor,
-        tmptype: this.tmptype,
-        tmptitle: this.tmptitle,
-        tmpcontent: this.tmpcontent,
         showedit: this.showedit,
         showmove: this.showmove,
         showadd: this.showadd,
@@ -154,10 +146,6 @@ class NotesList extends React.Component {
     } else {
       this.setState({
         notes: this.notes,
-        cursor: this.cursor,
-        tmptype: this.tmptype,
-        tmptitle: this.tmptitle,
-        tmpcontent: this.tmpcontent,
         showedit: this.showedit,
         showmove: this.showmove,
         showadd: this.showadd,
@@ -209,30 +197,11 @@ class NotesList extends React.Component {
     this.setState({notes: this.notes});
   }
 
-  handleSubmit(cursor) {
-    change_node_field(this.notes, cursor, 'title', this.state.tmptitle);
-    change_node_field(this.notes, cursor, 'type', this.state.tmptype);
-    change_node_field(this.notes, cursor, 'content', this.state.tmpcontent);
+  handleSubmit(cursor, type, title, content) {
+    change_node_field(this.notes, cursor, 'title', title);
+    change_node_field(this.notes, cursor, 'type', type);
+    change_node_field(this.notes, cursor, 'content', content);
     this.saveNotes();
-  }
-
-  handleInputChange(e) {
-    switch (e.target.name) {
-      case 'tmptype':
-        if (e.target.checked === true) {
-          this.tmptype = e.target.value;
-        }
-        break;
-      case 'tmptitle':
-        this.tmptitle = e.target.value;
-        break;
-      case 'tmpcontent':
-        this.tmpcontent = e.target.value;
-        break;
-      default:
-        break;
-    }
-    this.saveState();
   }
 
   handleSettingsChange(e) {
@@ -320,10 +289,7 @@ class NotesList extends React.Component {
   openNote(cursor) {
     let note = get_node(this.notes, cursor);
     if (note) {
-      this.cursor = cursor;
-      this.tmptype = note.type;
-      this.tmptitle = note.title;
-      this.tmpcontent = note.content;
+      this.OpenDialogRef.current.updateState(note.title, note.content);
       this.saveState();
       open_dialog(this.notesListRef, 'opennote');
     }
@@ -332,10 +298,7 @@ class NotesList extends React.Component {
   editNote(cursor) {
     let note = get_node(this.notes, cursor);
     if (note) {
-      this.cursor = cursor;
-      this.tmptype = note.type;
-      this.tmptitle = note.title;
-      this.tmpcontent = note.content;
+      this.EditDialogRef.current.updateState(cursor, note.type, note.title, note.content);
       this.saveState();
       open_dialog(this.notesListRef, 'editnote');
     }
@@ -427,34 +390,9 @@ class NotesList extends React.Component {
           <Snackbar id="mustBeNum">{this.state.text['text_snack_mustbenum']}</Snackbar>
           <Snackbar id="tooBig">{this.state.text['text_snack_toobig']}</Snackbar>
           <Snackbar id="tooSmall">{this.state.text['text_snack_toosmall']}</Snackbar>
-          <Dialog id="opennote" title={this.state.tmptitle} text_close_button={this.state.text['text_close_button']} >
-            <pre>{this.state.tmpcontent}</pre>
-          </Dialog>
-          <Dialog id="editnote" title={this.state.text['text_edit_title']}
-                  actions={(<span><input type="submit" value={this.state.text['text_delete']} onClick={event => this.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text['text_back']} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                  <input type="submit" value={this.state.text['text_save']} onClick={event => this.handleSubmit(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
-            <label>{this.state.text['text_edit_type']}
-              <input type="radio" id="abktypenote" name="tmptype" value="note" checked={this.state.tmptype === 'note'} onChange={this.handleInputChange}>
-              </input>{this.state.text['text_edit_note']}
-              <input type="radio" id="abktypefolder" name="tmptype" value="folder" checked={this.state.tmptype === 'folder'} onChange={this.handleInputChange}>
-              </input>{this.state.text['text_edit_folder']}
-            </label><br />
-            <label>{this.state.text['text_edit_note_title']}
-              <input type="text" id="abktitle" name="tmptitle" value={this.state.tmptitle} onChange={this.handleInputChange}></input>
-            </label><br />
-            {this.state.tmptype === 'note' &&
-              <label>{this.state.text['text_edit_content']}<br />
-                <textarea type="text"
-                  id="abkcontent"
-                  name="tmpcontent"
-                  value={this.state.tmpcontent}
-                  rows={this.state.textarearows}
-                  cols={this.state.textareacols}
-                  onChange={this.handleInputChange} />
-              </label>
-            }
-          </Dialog>
+          <OpenDialog id="OpenDialog" ref={this.OpenDialogRef} text={this.state.text} />
+          <EditDialog id="EditDialog" ref={this.EditDialogRef} text={this.state.text} textarearows={this.state.textarearows} textareacols={this.state.textareacols}
+           deleteNote={this.deleteNoe} handleSubmit={this.handleSubmit} />
           <Dialog id="settings" title={this.state.text['text_settings_title']} text_close_button={this.state.text['text_close_button']} >
             <p>{this.state.text['text_settings_content1']}</p>
             <label>{this.state.text['text_settings_showedit']}
