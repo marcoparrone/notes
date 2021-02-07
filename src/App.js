@@ -228,7 +228,8 @@ class NotesList extends React.Component {
     }
     if (this.i18n.language !== language) {
       this.i18n.change_language_translate_and_save_to_localStorage(language);
-      toupdate = true;
+      // changing language already calls forceUpdate
+      toupdate=false;
     }
     if (toupdate) {
       this.forceUpdate();
