@@ -47,9 +47,9 @@ export default class EditDialog extends React.Component {
   render() {
     return (
       <Dialog id="editnote" title={this.props.text['text_edit_title']}
-        actions={(<span><input type="submit" value={this.props.text['text_delete']} onClick={event => this.props.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-          <input type="submit" value={this.props.text['text_back']} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-          <input type="submit" value={this.props.text['text_save']} onClick={event => this.props.handleSubmit(this.state.cursor, this.state.type, this.state.title, this.state.content)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
+        actions={(<span><input type="submit" value={this.props.text['text_delete'] || "Delete"} onClick={event => this.props.deleteNote(this.state.cursor)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+          <input type="submit" value={this.props.text['text_back'] || "Back"} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
+          <input type="submit" value={this.props.text['text_save'] || "Save"} onClick={event => this.props.handleSubmit(this.state.cursor, this.state.type, this.state.title, this.state.content)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
         <label>{this.props.text['text_edit_type']}
           <input type="radio" id="abktypenote" name="type" value="note" checked={this.state.type === 'note'} onChange={this.handleInputChange}>
           </input>{this.props.text['text_edit_note']}
