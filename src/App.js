@@ -15,11 +15,11 @@ import EditDialog from './edit-dialog';
 import OpenDialog from './open-dialog';
 import SettingsDialog from './settings-dialog';
 
-import NodesArray from './react-nodes';
+import NodesArray from '@marcoparrone/react-nodes';
 
 const defaultText = require ('./en.json');
 
-class NodesList extends React.Component {
+class NodesApp extends React.Component {
 
   constructor(props) {
     super(props);
@@ -224,7 +224,7 @@ class NodesList extends React.Component {
 								{label: this.i18n.text['text_help_label'], icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
 								{label: this.i18n.text['text_about_label'], icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
           <NodesArray key="NodesArray" ref={this.NodesArrayRef} item="notes" text={this.i18n.text}
-            nodes={this.nodes} showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
+            nodes={this.notes} showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
             addNode={this.addNode} openNode={this.openNode} editNode={this.editNode} />
           <Snackbar id="mustBeNum">{this.i18n.text['text_snack_mustbenum']}</Snackbar>
           <Snackbar id="tooBig">{this.i18n.text['text_snack_toobig']}</Snackbar>
@@ -271,7 +271,7 @@ class NodesList extends React.Component {
 function App() {
   return (
     <div className="App">
-      <NodesList />
+      <NodesApp />
     </div>
   );
 }
