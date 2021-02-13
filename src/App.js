@@ -83,7 +83,8 @@ class NodesList extends React.Component {
   }
 
   saveNodes() {
-    this.NodesArrayRef.current.saveNodes(this.notes);
+    this.NodesArrayRef.current.updateState(this.notes);
+    this.NodesArrayRef.current.saveNodes();
   }
 
   handleSubmit(cursor, type, title, content) {
