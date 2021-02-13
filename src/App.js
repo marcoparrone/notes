@@ -15,7 +15,7 @@ import EditDialog from './edit-dialog';
 import OpenDialog from './open-dialog';
 import SettingsDialog from './settings-dialog';
 
-import NodesArray from './react-node';
+import NodesArray from './react-nodes';
 
 const defaultText = require ('./en.json');
 
