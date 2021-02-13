@@ -4,7 +4,7 @@ import React from 'react';
 
 import "@material/card/dist/mdc.card.css";
 
-import IconButton from './iconbutton';
+import IconButton from '@marcoparrone/iconbutton';
 
 import {
   move_node_backward, move_node_forward, move_node_upward, move_node_downward,
@@ -34,7 +34,6 @@ class Node extends React.Component {
               key={keyprefix + "." + i.toString()}
               type={element.type}
               title={element.title}
-              content={element.content}
               children={element.children}
               showedit={this.props.showedit}
               showmove={this.props.showmove}
@@ -134,7 +133,6 @@ export default class NodesArray extends React.Component {
             key={'Node' + i}
             type={this.state.nodes[i].type}
             title={this.state.nodes[i].title}
-            content={this.state.nodes[i].content}
             children={this.state.nodes[i].children}
             visible={this.state.nodes[i].visible}
             showedit={this.props.showedit}
