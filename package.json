@@ -13,7 +13,7 @@
 						"@marcoparrone/dialog": "^1.0.4",
 						"@marcoparrone/i18n": "^1.0.6",
 						"@marcoparrone/iconbutton": "^1.0.1",
-						"@marcoparrone/nodes": "^1.0.2",
+						"@marcoparrone/nodes": "^1.0.3",
 						"@marcoparrone/react-language-selector": "^1.0.6",
 						"@marcoparrone/react-nodes": "^1.0.2",
 						"@marcoparrone/snackbar": "^1.0.3",

@@ -14,6 +14,7 @@ import { add_node, get_node, change_node_field, delete_node, load_nodes, export_
 import EditDialog from './edit-dialog';
 import OpenDialog from './open-dialog';
 import SettingsDialog from './settings-dialog';
+import ImpExpDialog from './impexp-dialog';
 
 import NodesArray from '@marcoparrone/react-nodes';
 
@@ -40,6 +41,7 @@ class NodesApp extends React.Component {
     this.openNode = this.openNode.bind(this);
     this.editNode = this.editNode.bind(this);
     this.openSettings = this.openSettings.bind(this);
+    this.openImpExp = this.openImpExp.bind(this);
     this.deleteNode = this.deleteNode.bind(this);
     this.importNodes = this.importNodes.bind(this);
     this.exportNodes = this.exportNodes.bind(this);
@@ -196,6 +198,10 @@ class NodesApp extends React.Component {
     open_dialog(this.notesListRef, 'settings');
   }
 
+  openImpExp() {
+    open_dialog(this.notesListRef, 'impexp');
+  }
+
   deleteNode(cursor) {
     if (delete_node(this.notes, cursor)) {
       this.saveNodes();
@@ -203,12 +209,12 @@ class NodesApp extends React.Component {
     }
   }
 
-  importNodes(evt) {
+  importNodes(evt, merge) {
     import_nodes(this.notes, evt, ['type', 'title', 'content', 'visible'], this.i18n.text['text_error_loadfile'], this.i18n.text['text_error_fileformat'], () => {
       // Save and display.
       this.saveNodes();
       this.forceUpdate();
-    });
+    }, merge);
   }
 
   exportNodes() {
@@ -220,7 +226,7 @@ class NodesApp extends React.Component {
 			<AppWithTopBar refprop={this.notesListRef} lang={this.i18n.language} appname={this.i18n.text['text_appname']}
 			  icons={[{label: this.i18n.text['text_add_label'], icon: 'add', callback: () => this.addNode()},
 								{label: this.i18n.text['text_settings_label'], icon: 'settings', callback: () => this.openSettings()},
-								{label: this.i18n.text['text_importexport_label'], icon: 'import_export', callback: () => open_dialog(this.notesListRef, 'impexp')},
+								{label: this.i18n.text['text_importexport_label'], icon: 'import_export', callback: () => this.openImpExp()},
 								{label: this.i18n.text['text_help_label'], icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
 								{label: this.i18n.text['text_about_label'], icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
           <NodesArray key="NodesArray" ref={this.NodesArrayRef} item="notes" text={this.i18n.text}
@@ -236,15 +242,7 @@ class NodesApp extends React.Component {
            showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
            textarearows={this.textarearows} textareacols={this.textareacols} language={this.i18n.language} 
            handleSettingsChange={this.handleSettingsChange} />
-          <Dialog id="impexp" title={this.i18n.text['text_importexport_title']}
-                  actions={(<span>
-                    <label>{this.i18n.text['text_import']}
-                    &nbsp;
-                    <input type="file" onChange={e => this.importNodes(e)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></label>
-                    <input type="submit" value={this.i18n.text['text_back'] || "Back"} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-                    <input type="submit" value={this.i18n.text['text_export'] || "Export"} onClick={event => this.exportNodes()} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)} >
-            <p>{this.i18n.text['text_importexport_content']}</p>
-          </Dialog>
+          <ImpExpDialog id="ImpExpDialog" text={this.i18n.text} exportNodes={this.exportNodes} importNodes={this.importNodes} />
           <Dialog id="help" title={this.i18n.text['text_help_title']} text_close_button={this.i18n.text['text_close_button']} >
             <p>{this.i18n.text['text_help_content1']}</p>
             <p>{this.i18n.text['text_help_content2']}</p>
