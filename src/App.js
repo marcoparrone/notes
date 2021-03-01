@@ -28,6 +28,7 @@ class NodesApp extends React.Component {
     this.showedit = 'yes';
     this.showmove = 'no';
     this.showadd = 'yes';
+    this.expandbydefault = 'yes';
     this.textarearows = '20';
     this.textareacols = '30';
 
@@ -60,6 +61,7 @@ class NodesApp extends React.Component {
     let showadd = localStorage.getItem('notes_showadd');
     let textarearows = localStorage.getItem('notes_textarearows');
     let textareacols = localStorage.getItem('notes_textareacols');
+    let expandbydefault = localStorage.getItem('notes_expandbydefault');
 
     if (showedit === 'yes' || showedit === 'no') {
       this.showedit = showedit;
@@ -69,6 +71,9 @@ class NodesApp extends React.Component {
     }
     if (showadd === 'yes' || showadd === 'no') {
       this.showadd = showadd;
+    }
+    if (expandbydefault === 'yes' || expandbydefault === 'no') {
+      this.expandbydefault = expandbydefault;
     }
     if (!isNaN(textarearows) && textarearows !== '' && parseInt(textarearows) <= 1000 && parseInt(textarearows) >= 1) {
       this.textarearows = textarearows;
@@ -96,7 +101,7 @@ class NodesApp extends React.Component {
     this.saveNodes();
   }
 
-  handleSettingsChange(showedit, showmove, showadd, textarearows, textareacols, language) {
+  handleSettingsChange(showedit, showmove, showadd, textarearows, textareacols, language, expandbydefault) {
     let tmpint=0;
     let toupdate = false;
     if (this.showedit !== showedit) {
@@ -112,6 +117,11 @@ class NodesApp extends React.Component {
     if (this.showadd !== showadd) {
       this.showadd = showadd;
       localStorage.setItem('notes_showadd', showadd);
+      toupdate = true;
+    }
+    if (this.expandbydefault !== expandbydefault) {
+      this.expandbydefault=expandbydefault;
+      localStorage.setItem('notes_expandbydefault', expandbydefault);
       toupdate = true;
     }
     if (this.textarearows !== textarearows) {
@@ -194,7 +204,7 @@ class NodesApp extends React.Component {
   }
 
   openSettings() {
-    this.SettingsDialogRef.current.updateState(this.showedit, this.showmove, this.showadd, this.textarearows, this.textareacols, this.i18n.language);
+    this.SettingsDialogRef.current.updateState(this.showedit, this.showmove, this.showadd, this.textarearows, this.textareacols, this.i18n.language, this.expandbydefault);
     open_dialog(this.notesListRef, 'settings');
   }
 
@@ -230,7 +240,7 @@ class NodesApp extends React.Component {
 								{label: this.i18n.text['text_help_label'], icon: 'help', callback: () => open_dialog(this.notesListRef, 'help')},
 								{label: this.i18n.text['text_about_label'], icon: 'info', callback: () =>  open_dialog(this.notesListRef, 'about')}]} >
           <NodesArray key="NodesArray" ref={this.NodesArrayRef} item="notes" text={this.i18n.text}
-            nodes={this.notes} showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
+            nodes={this.notes} showedit={this.showedit} showmove={this.showmove} showadd={this.showadd} expanded={this.expandbydefault === 'yes' ? true : false}
             addNode={this.addNode} openNode={this.openNode} editNode={this.editNode} />
           <Snackbar id="mustBeNum">{this.i18n.text['text_snack_mustbenum']}</Snackbar>
           <Snackbar id="tooBig">{this.i18n.text['text_snack_toobig']}</Snackbar>
@@ -239,7 +249,7 @@ class NodesApp extends React.Component {
           <EditDialog id="EditDialog" ref={this.EditDialogRef} text={this.i18n.text} textarearows={this.textarearows} textareacols={this.textareacols}
            deleteNode={this.deleteNode} handleSubmit={this.handleSubmit} />
           <SettingsDialog id="SettingsDialog" ref={this.SettingsDialogRef} text={this.i18n.text}
-           showedit={this.showedit} showmove={this.showmove} showadd={this.showadd}
+           showedit={this.showedit} showmove={this.showmove} showadd={this.showadd} expandbydefault={this.expandbydefault}
            textarearows={this.textarearows} textareacols={this.textareacols} language={this.i18n.language} 
            handleSettingsChange={this.handleSettingsChange} />
           <ImpExpDialog id="ImpExpDialog" text={this.i18n.text} exportNodes={this.exportNodes} importNodes={this.importNodes} />

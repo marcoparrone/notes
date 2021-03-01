@@ -15,20 +15,22 @@ export default class SettingsDialog extends React.Component {
       showadd: this.props.showadd,
       textarearows: this.props.textarearows,
       textareacols: this.props.textareacols,
-      language: this.props.language
+      language: this.props.language,
+      expandbydefault: this.props.expandbydefault
     };
     this.updateState = this.updateState.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
   }
 
-  updateState(showedit, showmove, showadd, textarearows, textareacols, language) {
+  updateState(showedit, showmove, showadd, textarearows, textareacols, language, expandbydefault) {
     this.setState({
       showedit: showedit,
       showmove: showmove,
       showadd: showadd,
       textarearows: textarearows,
       textareacols: textareacols,
-      language: language
+      language: language,
+      expandbydefault: expandbydefault
     });
   }
 
@@ -49,6 +51,11 @@ export default class SettingsDialog extends React.Component {
           this.setState({ showadd: e.target.value });
         }
         break;
+      case 'expandbydefault':
+        if (e.target.checked === true) {
+          this.setState({ expandbydefault: e.target.value });
+        }
+        break;
       case 'textarearows':
         this.setState({ textarearows: e.target.value });
         break;
@@ -67,7 +74,7 @@ export default class SettingsDialog extends React.Component {
     return (
       <Dialog id="settings" title={this.props.text['text_settings_title']}
         actions={(<span><input type="submit" value={this.props.text['text_back'] || "Back"} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" />
-          <input type="submit" value={this.props.text['text_save'] || "Save"} onClick={event => this.props.handleSettingsChange(this.state.showedit, this.state.showmove, this.state.showadd, this.state.textarearows, this.state.textareacols, this.state.language)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
+          <input type="submit" value={this.props.text['text_save'] || "Save"} onClick={event => this.props.handleSettingsChange(this.state.showedit, this.state.showmove, this.state.showadd, this.state.textarearows, this.state.textareacols, this.state.language, this.state.expandbydefault)} className="mdc-button mdc-dialog__button" data-mdc-dialog-action="yes" /></span>)}>
         <p>{this.props.text['text_settings_content1']}</p>
         <label>{this.props.text['text_settings_showedit']}
           <input type="radio" id="showedityes" name="showedit" value="yes" checked={this.state.showedit === 'yes'} onChange={this.handleInputChange}>
@@ -85,6 +92,12 @@ export default class SettingsDialog extends React.Component {
           <input type="radio" id="showaddyes" name="showadd" value="yes" checked={this.state.showadd === 'yes'} onChange={this.handleInputChange}>
           </input>{this.props.text['text_yes']}
           <input type="radio" id="showaddno" name="showadd" value="no" checked={this.state.showadd === 'no'} onChange={this.handleInputChange}>
+          </input>{this.props.text['text_no']}
+        </label><br />
+        <label>{this.props.text['text_settings_expandbydefault']}
+          <input type="radio" id="expandbydefaultyes" name="expandbydefault" value="yes" checked={this.state.expandbydefault === 'yes'} onChange={this.handleInputChange}>
+          </input>{this.props.text['text_yes']}
+          <input type="radio" id="expandbydefaultno" name="expandbydefault" value="no" checked={this.state.expandbydefault === 'no'} onChange={this.handleInputChange}>
           </input>{this.props.text['text_no']}
         </label><br />
         <label>{this.props.text['text_settings_rows']}
