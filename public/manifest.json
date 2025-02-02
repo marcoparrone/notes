@@ -12,12 +12,12 @@
 	{ "src": "favicon.ico", "sizes": "64x64", "type": "image/x-icon" }
     ],
     "lang": "en-US",
-    "start_url": "https://notes.marcoparrone.com",
+    "start_url": "https://marcoparrone.github.io/notes",
     "display": "standalone",
     "orientation": "any",
     "theme_color": "#000000",
     "background_color": "#ffffff",
-    "scope": "https://notes.marcoparrone.com",
+    "scope": "https://marcoparrone.github.io/notes",
     "categories":  ["productivity", "tools", "notes"],
     "screenshots" : [
         {
